@@ -1,8 +1,10 @@
 import web
+import admin
 import blog
 
 urls = (
 		'/', 'index',
+		'/admin', admin.app_admin,
 		'/blog', blog.app_blog,
 		)
 

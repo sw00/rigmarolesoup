@@ -20,4 +20,4 @@ class blog:
 		return render.blog()
 
 app_admin = web.application(urls, globals())
-app = app_admin.gaerun()
+
