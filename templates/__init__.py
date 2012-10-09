@@ -1,6 +1,6 @@
 from web.template import CompiledTemplate, ForLoop, TemplateResult
 
-import admin, blog
+import admin, shared, blog
 # coding: utf-8
 def index():
     __lineoffset__ = -5
