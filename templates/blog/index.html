@@ -1,1 +1,13 @@
-BLOG
+$def with (posts)
+<div class="row">
+	<div class="span8">
+	$for p in posts:
+		<div class="well">
+			<h3>$(p.title)</h3>
+			<small>$(p.created)</small>
+			<section class="body">
+				$:p.body
+			</section>
+		</div>
+	</div>
+</div>

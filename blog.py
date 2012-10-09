@@ -1,11 +1,14 @@
 import web
+from google.appengine.ext import db
+from models import Post
 
 urls = (
 		#'', 'reblog',
 		'/?$', 'index',
-		'/post/([^/]*)/?$', 'post'
+		'/p/([^/]*)/?$', 'post'
 		)
 
+shared = web.template.render('templates/shared')
 render = web.template.render('templates/blog')
 
 class reblog:
@@ -14,7 +17,11 @@ class reblog:
 
 class index:
 	def GET(self):
-		return render.index()
+		#get latest 3 blog posts
+		q = Post().all()
+		posts = q.run(limit=3)
+
+		return shared.layout(render.index(posts))
 
 class post:
     def GET(self, alias):
