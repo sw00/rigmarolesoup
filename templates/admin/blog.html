@@ -1,0 +1,24 @@
+$def with (posts)
+<div class="row">
+	<div class="span8 offset2">
+		<h2>Blog Posts</h2>
+		<div class="pull-right">
+			<button class="btn btn-action" >create</button>
+		</div>
+		<table class="table table-striped">
+			<tr>
+				<th>date</th>
+				<th>title</th>
+				<th>edit</td>
+				<th>delete</td>
+			</tr>
+			$for p in posts:
+				<tr>
+					<td>$p.created</td>
+					<td>$p.title</td>
+					<td><a href="#edit">edit</ad></td>
+					<td><a href="#delete">[x]</a></td>
+				</tr>
+		</table>
+	</div>
+</div>
