@@ -1,13 +1,47 @@
 $def with (posts)
-<div class="row">
-	<div class="span8">
-	$for p in posts:
-		<div class="well">
-			<h3>$(p.title)</h3>
-			<small>$(p.created)</small>
-			<section class="body">
-				$:p.body
-			</section>
+$code:
+	admin = users.is_current_user_admin()
+
+$if admin:
+	<h1>$admin</h1>
+	<div class="row">
+		<div class="span4 offset4 well well-small"><a class="btn btn-small btn-action" href="blog/create">create</a>
+			<button class="btn btn-small btn-primary pull-right">log lout</button>	
 		</div>
 	</div>
+
+<div class="row row-fluid" id="content">
+	<div class="span8" id="content-blogs">
+	$for p in posts:
+		<article>
+		<header style="text-align:center">
+		<h3><a href="p/$p.title" title="$:p.title">$(p.title)</a></h3>
+		<small class="pull-right">$(p.created)</small>
+		<div class="btn-group">
+			<a href="#edit" class="btn btn-mini">edit</a>
+			<a href="#delete" class="btn btn-mini">delete</a>
+		</div>
+		</header>
+		<div class="body">
+				$:p.body
+			</div>
+			<footer>
+			<hr/>
+			</footer>
+	</article>
 </div>
+<div class="span2 pull-left" id="aside">
+	<form id="search" action="search" method="POST">
+		<input type="search" placeholder="search..."></input>
+	</form>
+	<hr/>
+	<h4>Categories</h4>
+	<ul>
+		<li>stuff</li>
+	</ul>
+</div>
+</div>
+
+<script type="text/javascript" language="javascript">
+	
+</script>
