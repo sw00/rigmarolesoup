@@ -41,31 +41,7 @@ def layout (content, title='rigmarole soup'):
     extend_([u'\n'])
     extend_([u'  <body>\n'])
     extend_([u'\n'])
-    extend_([u'    <div class="navbar navbar-inverse navbar-fixed-top">\n'])
-    extend_([u'      <div class="navbar-inner">\n'])
-    extend_([u'        <div class="container">\n'])
-    extend_([u'          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">\n'])
-    extend_([u'            <span class="icon-bar"></span>\n'])
-    extend_([u'            <span class="icon-bar"></span>\n'])
-    extend_([u'            <span class="icon-bar"></span>\n'])
-    extend_([u'          </a>\n'])
-    extend_([u'          <a class="brand" href="#">rigmarole soup</a>\n'])
-    extend_([u'          <div class="nav-collapse collapse">\n'])
-    extend_([u'            <ul class="nav">\n'])
-    extend_([u'              <li class="active"><a href="#">Home</a></li>\n'])
-    extend_([u'              <li><a href="#about">About</a></li>\n'])
-    extend_([u'              <li><a href="#contact">Contact</a></li>\n'])
-    extend_([u'            </ul>\n'])
-    extend_([u'          </div><!--/.nav-collapse -->\n'])
-    extend_([u'        </div>\n'])
-    extend_([u'      </div>\n'])
-    extend_([u'    </div>\n'])
-    extend_([u'\n'])
-    extend_([u'    <div class="container">\n'])
-    extend_([u'\n'])
     extend_([u'      ', escape_(content, False), u'\n'])
-    extend_([u'\n'])
-    extend_([u'    </div> <!-- /container -->\n'])
     extend_([u'\n'])
     extend_([u'    <!-- Le javascript\n'])
     extend_([u'    ================================================== -->\n'])
@@ -107,4 +83,41 @@ def post_form (form, action):
 
 post_form = CompiledTemplate(post_form, 'templates/shared/post_form.html')
 join_ = post_form._join; escape_ = post_form._escape
+
+# coding: utf-8
+def header (title, menus):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    
+    user = users.get_current_user()
+    if user:
+            logout_url = users.create_logout_url('/blog')
+    else:
+            login_url = users.create_login_url('/blog')
+    
+    
+    extend_([u'<div class="navbar navbar-inverse navbar-fixed-top">\n'])
+    extend_([u'      <div class="navbar-inner">\n'])
+    extend_([u'        <div class="container">\n'])
+    extend_([u'          <a class="brand" href="#">', escape_(title, False), u'</a>\n'])
+    extend_([u'          <div class="nav-collapse collapse">\n'])
+    extend_([u'                          <ul class="nav">\n'])
+    for m in loop.setup(menus):
+        extend_(['                                ', u'    <li ><a href="', escape_(m, False), u'">', escape_(m, False), u'</a></li>\n'])
+        extend_(['                                ', u'\n'])
+    if user:
+        extend_(['                                ', u'    <li><a href="', escape_(logout_url, False), u'">logout</a></li>\n'])
+    else:
+        extend_(['                                ', u'    <li><a href="', escape_(login_url, False), u'">login</a></li>\n'])
+    extend_([u'            </ul>\n'])
+    extend_([u'                </div><!--/.nav-collapse -->\n'])
+    extend_([u'          </div>\n'])
+    extend_([u'      </div>\n'])
+    extend_([u'  </div>\n'])
+
+    return self
+
+header = CompiledTemplate(header, 'templates/shared/header.html')
+join_ = header._join; escape_ = header._escape
 

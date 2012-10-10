@@ -8,12 +8,15 @@ urls = (
 		'/blog', blog.app_blog,
 		)
 
-render = web.template.render('templates', base='layout')
-
 class index:
 	""" index of site """
 	def GET(self):
-		return render.index()
+		shared = web.template.render('templates/shared')
+		globals = {
+			'template' : shared
+			}
+		render = web.template.render('templates', globals=globals)
+		return shared.layout(render.index(self))
 
 app = web.application(urls, globals())
 app = app.gaerun()

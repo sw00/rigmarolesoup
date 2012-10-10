@@ -6,17 +6,10 @@ def index (posts):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
-    
-    admin = users.is_current_user_admin()
-    
-    if admin:
-        extend_([u'    <h1>', escape_(admin, True), u'</h1>\n'])
-        extend_([u'    <div class="row">\n'])
-        extend_([u'            <div class="span4 offset4 well well-small"><a class="btn btn-small btn-action" href="blog/create">create</a>\n'])
-        extend_([u'                    <button class="btn btn-small btn-primary pull-right">log lout</button>  \n'])
-        extend_([u'            </div>\n'])
-        extend_([u'    </div>\n'])
-        extend_([u'\n'])
+    extend_([u'\n'])
+    extend_([escape_(template.header('blog.rigmarolesoup', ['dev','pol','mus','art','sci','fil']), False), u'\n'])
+    extend_([u'\n'])
+    extend_([u'<section id="content">\n'])
     extend_([u'<div class="row row-fluid" id="content">\n'])
     extend_([u'        <div class="span8" id="content-blogs">\n'])
     for p in loop.setup(posts):
@@ -31,7 +24,10 @@ def index (posts):
         extend_(['        ', u'    </header>\n'])
         extend_(['        ', u'    <div class="body">\n'])
         extend_(['        ', u'                    ', escape_(p.body, False), u'\n'])
-        extend_(['        ', u'    </div>\n'])
+        extend_(['        ', u'            </div>\n'])
+        extend_(['        ', u'            <footer>\n'])
+        extend_(['        ', u'            <hr/>\n'])
+        extend_(['        ', u'            </footer>\n'])
     extend_([u'        </article>\n'])
     extend_([u'</div>\n'])
     extend_([u'<div class="span2 pull-left" id="aside">\n'])
@@ -45,7 +41,7 @@ def index (posts):
     extend_([u'        </ul>\n'])
     extend_([u'</div>\n'])
     extend_([u'</div>\n'])
-    extend_([u'\n'])
+    extend_([u'</section>\n'])
     extend_([u'<script type="text/javascript" language="javascript">\n'])
     extend_([u'        \n'])
     extend_([u'</script>\n'])

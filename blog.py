@@ -10,9 +10,13 @@ urls = (
 		'/p/([^/]*)/?$', 'post'
 		)
 
-globals = { 'users' : users }
-
 shared = web.template.render('templates/shared')
+
+globals = { 
+			'users' 	: users
+			}
+shared = web.template.render('templates/shared', globals=globals)
+globals['template'] = shared
 render = web.template.render('templates/blog', globals=globals)
 
 class reblog:
@@ -25,7 +29,7 @@ class index:
 		q = Post().all()
 		posts = q.run(limit=3)
 		
-		return shared.layout(render.index(posts, ))
+		return shared.layout(render.index(posts))
 
 class create:
 	def GET(self):

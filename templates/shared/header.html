@@ -1,0 +1,27 @@
+$def with (title, menus)
+$code:
+	user = users.get_current_user()
+	if user:
+		logout_url = users.create_logout_url('/blog')
+	else:
+		login_url = users.create_login_url('/blog')
+
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">$:title</a>
+          <div class="nav-collapse collapse">
+			  <ul class="nav">
+				$for m in menus:
+					<li ><a href="$:m">$:m</a></li>
+
+				$if user:
+					<li><a href="$:logout_url">logout</a></li>
+				$else:
+					<li><a href="$:login_url">login</a></li>
+            </ul>
+		</div><!--/.nav-collapse -->
+	  </div>
+      </div>
+  </div>

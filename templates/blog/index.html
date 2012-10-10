@@ -1,15 +1,8 @@
 $def with (posts)
-$code:
-	admin = users.is_current_user_admin()
 
-$if admin:
-	<h1>$admin</h1>
-	<div class="row">
-		<div class="span4 offset4 well well-small"><a class="btn btn-small btn-action" href="blog/create">create</a>
-			<button class="btn btn-small btn-primary pull-right">log lout</button>	
-		</div>
-	</div>
+$:template.header('blog.rigmarolesoup', ['dev','pol','mus','art','sci','fil'])
 
+<section id="content">
 <div class="row row-fluid" id="content">
 	<div class="span8" id="content-blogs">
 	$for p in posts:
@@ -41,7 +34,7 @@ $if admin:
 	</ul>
 </div>
 </div>
-
+</section>
 <script type="text/javascript" language="javascript">
 	
 </script>
