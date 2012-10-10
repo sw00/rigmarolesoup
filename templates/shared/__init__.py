@@ -85,6 +85,22 @@ post_form = CompiledTemplate(post_form, 'templates/shared/post_form.html')
 join_ = post_form._join; escape_ = post_form._escape
 
 # coding: utf-8
+def footer():
+    __lineoffset__ = -5
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<div class="row">\n'])
+    extend_([u'                <div class="span10 offset2" style="text-align:center">\n'])
+    extend_([u'                                <hr/>\n'])
+    extend_([u'                                View this site on <a href="http://github.com/sw00/rigmarolesoup">GitHub</a></div>\n'])
+    extend_([u'                                                                            </div>\n'])
+
+    return self
+
+footer = CompiledTemplate(footer, 'templates/shared/footer.html')
+join_ = footer._join; escape_ = footer._escape
+
+# coding: utf-8
 def header (title, menus):
     __lineoffset__ = -4
     loop = ForLoop()

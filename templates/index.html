@@ -1,15 +1,17 @@
 $def with (self)
 <section id="content">
-<div class="row pull-left">
+<div class="row">
+
+			<div class="span10 offset2">
+		<h1>rigmarole soup</h1>
+	</div>
+</div>
+	
+<div class="row">
 	<div class="span4">
 		<img src="" class="img-roundeed" />
 	</div>
-</div>
-<div class="row pull-left">
-	<div class="span10 offset2">
-		<h1>rigmarole soup</h1>
-	</div>
-	<div class="span10 offset2">
+	<div class="span10 pull-left">
 		<ul class="thumbnails">
 			<li class="span4">
 			<div class="thumbnail">
@@ -38,11 +40,7 @@ $def with (self)
 		</ul>			
 	</div>
 </div>
-<section id="content">
+</section>
 <footer>
-    <div class="row">
-        <div class="span10 offset2" style="text-align:center">
-            Copyright 2012 &copy; Sett Wai
-        </div>
-    </div>
+    $:template.footer()
 </footer>
