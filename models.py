@@ -1,20 +1,21 @@
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
-class Post(db.Model):
-	title = db.StringProperty()
-	body = db.TextProperty()
-	created = db.DateTimeProperty(auto_now_add=True)
+class Post(ndb.Model):
+	title = ndb.StringProperty()
+	body = ndb.TextProperty()
+	created = ndb.DateTimeProperty(auto_now_add=True)
+	category = ndb.KeyProperty()
+	tags = ndb.KeyProperty(repeated=True)
 
-class Resource(db.Model):
-	name = db.StringProperty()
-	mimetype = db.StringProperty()
-	uri = db.StringProperty()
+	@classmethod
+	def fetch_all(cls, *filters):
+		return cls.query(*filters).order(cls.created)
 
-class Category(db.Model):
-	name = db.StringProperty()
-	desc = db.StringProperty()
+class Category(ndb.Model):
+	name = ndb.StringProperty()
+	desc = ndb.StringProperty(indexed=False)
 
-class Tags(db.Model):
-	name = db.StringProperty()
 
+class Tag(ndb.Model):
+	name = ndb.StringProperty()
 
