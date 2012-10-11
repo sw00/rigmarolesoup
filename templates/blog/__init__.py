@@ -52,34 +52,59 @@ index = CompiledTemplate(index, 'templates/blog/index.html')
 join_ = index._join; escape_ = index._escape
 
 # coding: utf-8
-def create (self):
+def create (form):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
-    extend_([u'<form action="" method="POST">\n'])
-    extend_([u'        <legend>New Blog Entry</legend>\n'])
-    extend_([u'        <fieldset>\n'])
-    extend_([u'        <label>Title</label>\n'])
-    extend_([u'        <input type="text"></input>\n'])
-    extend_([u'</fieldset>\n'])
-    extend_([u'<fieldset>\n'])
-    extend_([u'        <label>Body</label>\n'])
-    extend_([u'        <input type="textarea"></input>\n'])
-    extend_([u'</fieldset>\n'])
-    extend_([u'<fieldset>\n'])
-    extend_([u'        <label>References</label>\n'])
-    extend_([u'        <select>\n'])
-    extend_([u'                <option value="">None</option>\n'])
-    extend_([u'        </select>\n'])
-    extend_([u'</fieldset>\n'])
-    extend_([u'<fieldset>\n'])
-    extend_([u'        <label>Tags</label>\n'])
-    extend_([u'        <input type="text"></input>\n'])
-    extend_([u'</fieldset>\n'])
-    extend_([u'<input type="submit">Save</input>\n'])
+    extend_([u'<div class="row">\n'])
+    extend_([u'        <div class="span10 offset2">\n'])
+    if not form.valid:
+        extend_(['        ', u'<p class="error"> Try again.</p>\n'])
+    extend_([u'        \n'])
+    extend_([u'<form name="create" method="POST">\n'])
+    extend_([u'        ', escape_(form.render(), False), u'\n'])
+    extend_([u'</form>\n'])
+    extend_([u'</div>\n'])
+    extend_([u'</div>\n'])
+    extend_([u'<script type="text/javascript" src="/static/tiny_mce/tiny_mce.js"></script>\n'])
+    extend_([u'<script type="text/javascript">\n'])
+    extend_([u'        tinyMCE.init({\n'])
+    extend_([u'                mode : "textareas",\n'])
+    extend_([u'                theme: "simple",\n'])
+    extend_([u'                plugins: "autolink,spellchecker,pagebreak,save",\n'])
+    extend_([u'\n'])
+    extend_([u'                width : "100%",\n'])
+    extend_([u'                height : "400"\n'])
+    extend_([u'        });\n'])
+    extend_([u'</script>\n'])
 
     return self
 
 create = CompiledTemplate(create, 'templates/blog/create.html')
 join_ = create._join; escape_ = create._escape
+
+# coding: utf-8
+def preview (d):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<div row>\n'])
+    extend_([u'        <div class="span10">\n'])
+    extend_([u'                <article>\n'])
+    extend_([u'                <h3>', escape_(d.title, True), u'</h3>\n'])
+    extend_([u'                <small>', escape_(d.category, True), u'</small>\n'])
+    extend_([u'                <section class="content">\n'])
+    extend_([u'                ', escape_(d.content, False), u'\n'])
+    extend_([u'                </section>\n'])
+    extend_([u'                <footer>\n'])
+    extend_([u'                        <p>', escape_(d.tags, True), u'</p>\n'])
+    extend_([u'                </footer>\n'])
+    extend_([u'                </article>\n'])
+    extend_([u'        </div>\n'])
+    extend_([u'</div>\n'])
+
+    return self
+
+preview = CompiledTemplate(preview, 'templates/blog/preview.html')
+join_ = preview._join; escape_ = preview._escape
 

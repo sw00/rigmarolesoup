@@ -8,8 +8,7 @@ def index (self):
     self = TemplateResult(); extend_ = self.extend
     extend_([u'<section id="content">\n'])
     extend_([u'<div class="row">\n'])
-    extend_([u'\n'])
-    extend_([u'                        <div class="span10 offset2">\n'])
+    extend_([u'                        <div class="span10">\n'])
     extend_([u'                <h1>rigmarole soup</h1>\n'])
     extend_([u'        </div>\n'])
     extend_([u'</div>\n'])

@@ -1,4 +1,5 @@
 import web
+from web import form
 from google.appengine.ext import db
 from models import Post
 from google.appengine.api import users
@@ -31,14 +32,29 @@ class index:
 		
 		return shared.layout(render.index(posts))
 
+
 class create:
+	createform = form.Form(
+			form.Textbox('title'),
+			form.Dropdown('category', [('0', 'None')]),
+			form.Textarea('content'),
+			form.Textbox('references'),
+			form.Textbox('tags'),
+			form.Button('submit', type='submit')
+			)
+
 	def GET(self):
 		if users.is_current_user_admin():
-			return shared.layout(render.create(self))
+			form = self.createform()
+			return shared.layout(render.create(form))
 		else:
 			raise web.Forbidden()
 
 	def POST(self):
-		pass
+		form = self.createform()
+		if not form.validates():
+			return shared.layout(render.create(form))
+		else:
+			return shared.layout(render.preview(form.d))
 
 app_blog = web.application(urls, locals())

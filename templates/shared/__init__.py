@@ -19,6 +19,8 @@ def layout (content, title='rigmarole soup'):
     extend_([u'\n'])
     extend_([u'    <!-- Le styles -->\n'])
     extend_([u'    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">\n'])
+    extend_([u'                <link href="/static/css/site.css" rel="stylesheet">\n'])
+    extend_([u'\n'])
     extend_([u'    <style>\n'])
     extend_([u'      body {\n'])
     extend_([u'        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */\n'])
@@ -92,7 +94,8 @@ def footer():
     extend_([u'<div class="row">\n'])
     extend_([u'                <div class="span10 offset2" style="text-align:center">\n'])
     extend_([u'                                <hr/>\n'])
-    extend_([u'                                View this site on <a href="http://github.com/sw00/rigmarolesoup">GitHub</a></div>\n'])
+    extend_([u'                                <p>Copyright &copy; Sett Wai. Some Rights Reserved.</p>\n'])
+    extend_([u'                                <p>     View this site on <a href="http://github.com/sw00/rigmarolesoup">GitHub</a></p></div>\n'])
     extend_([u'                                                                            </div>\n'])
 
     return self
