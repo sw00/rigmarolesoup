@@ -1,26 +1,28 @@
-$def with (self, posts)
+<%inherit file="layout.html"/>
 
-$:template.header('blog.rigmarolesoup', ['dev','pol','mus','art','sci','fil'])
+<%include file="header.html"/>
+
 <section id="content">
 <div class="row row-fluid" id="content">
 	<div class="span8" id="content-blogs">
-	$for p in posts:
+	% for p in posts:
 		<article>
 		<header style="text-align:center">
-		<h3><a href="p/$p.title" title="$:p.title">$(p.title)</a></h3>
-		<small class="pull-right">$(p.created)</small>
+		<h3><a href="p/${p.title}" title="${p.title}">${p.title}</a></h3>
+		<small class="pull-right">${p.created}</small>
 		<div class="btn-group">
 			<a href="#edit" class="btn btn-mini">edit</a>
 			<a href="#delete" class="btn btn-mini">delete</a>
 		</div>
 		</header>
 		<div class="body">
-				$:p.body
+			${p.body}
 			</div>
 			<footer>
 			<hr/>
 			</footer>
 	</article>
+	% endfor
 </div>
 <div class="span2 pull-left" id="aside">
 	<form id="search" action="search" method="POST">
@@ -34,6 +36,9 @@ $:template.header('blog.rigmarolesoup', ['dev','pol','mus','art','sci','fil'])
 </div>
 </div>
 </section>
+
+<%include file="footer.html"/>
+
 <script type="text/javascript" language="javascript">
 	
 </script>

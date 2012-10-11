@@ -26,7 +26,16 @@ class index:
 	def GET(self):
 		#get latest 3 blog posts
 		posts = Post.fetch_all().fetch(3)
-		return render.index(posts=posts)
+
+		#do the admin check
+		login_url = None
+		logout_url = None
+		if users.is_current_user_admin():
+			logout_url = users.create_logout_url('/blog')
+		else:
+			login_url = users.create_login_url('/blog')
+
+		return render.index(posts=posts, login_url=login_url, logout_url=logout_url)
 
 class create:
 	createform = form.Form(
