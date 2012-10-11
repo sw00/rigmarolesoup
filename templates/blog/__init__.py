@@ -2,13 +2,12 @@ from web.template import CompiledTemplate, ForLoop, TemplateResult
 
 
 # coding: utf-8
-def index (posts):
+def index (self, posts):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
     extend_([u'\n'])
     extend_([escape_(template.header('blog.rigmarolesoup', ['dev','pol','mus','art','sci','fil']), False), u'\n'])
-    extend_([u'\n'])
     extend_([u'<section id="content">\n'])
     extend_([u'<div class="row row-fluid" id="content">\n'])
     extend_([u'        <div class="span8" id="content-blogs">\n'])

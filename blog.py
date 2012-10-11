@@ -1,7 +1,7 @@
 import web
 from web import form
-from google.appengine.ext import db
 from models import Post
+from google.appengine.ext import ndb
 from google.appengine.api import users
 
 urls = (
@@ -27,11 +27,8 @@ class reblog:
 class index:
 	def GET(self):
 		#get latest 3 blog posts
-		q = Post().all()
-		posts = q.run(limit=3)
-		
-		return shared.layout(render.index(posts))
-
+		posts = Post.fetch_all().fetch(3)
+		return shared.layout(render.index(self, posts))
 
 class create:
 	createform = form.Form(
