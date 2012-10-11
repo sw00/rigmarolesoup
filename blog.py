@@ -50,11 +50,12 @@ class create:
 	def GET(self):
 		if users.is_current_user_admin():
 			form = self.createform()
-			return shared.layout(render.create(form))
+			return render.create(form=form)
 		else:
 			raise web.Forbidden()
 
 	def POST(self):
+		#todo: CREATE post object and persist in data store.
 		form = self.createform()
 		if not form.validates():
 			return shared.layout(render.create(form))
