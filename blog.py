@@ -1,4 +1,5 @@
 import web
+from web.contrib.template import render_mako
 from web import form
 from models import Post
 from google.appengine.ext import ndb
@@ -11,14 +12,11 @@ urls = (
 		'/p/([^/]*)/?$', 'post'
 		)
 
-shared = web.template.render('templates/shared')
-
-globals = { 
-			'users' 	: users
-			}
-shared = web.template.render('templates/shared', globals=globals)
-globals['template'] = shared
-render = web.template.render('templates/blog', globals=globals)
+render = render_mako(
+		directories=['templates/shared', 'templates/blog'],
+		input_encoding='utf-8',
+		output_encoding='utf-8',
+		)
 
 class reblog:
     def GET(self):
@@ -28,7 +26,7 @@ class index:
 	def GET(self):
 		#get latest 3 blog posts
 		posts = Post.fetch_all().fetch(3)
-		return shared.layout(render.index(self, posts))
+		return render.index(posts=posts)
 
 class create:
 	createform = form.Form(
