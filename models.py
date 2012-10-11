@@ -5,7 +5,7 @@ class Post(ndb.Model):
 	body = ndb.TextProperty()
 	created = ndb.DateTimeProperty(auto_now_add=True)
 	category = ndb.KeyProperty()
-	tags = ndb.KeyProperty(repeated=True)
+	tags = ndb.StringProperty(repeated=True)
 
 	@classmethod
 	def fetch_all(cls, *filters):
@@ -14,8 +14,4 @@ class Post(ndb.Model):
 class Category(ndb.Model):
 	name = ndb.StringProperty()
 	desc = ndb.StringProperty(indexed=False)
-
-
-class Tag(ndb.Model):
-	name = ndb.StringProperty()
 
