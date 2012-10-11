@@ -28,3 +28,7 @@ handlers:
 - url: .*
   script: main.app
 
+libraries:
+- name: markupsafe
+  version: latest
+

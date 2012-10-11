@@ -1,6 +1,7 @@
 import web
 import admin
 import blog
+from web.contrib.template import render_mako
 
 urls = (
 		'/', 'index',
@@ -8,15 +9,17 @@ urls = (
 		'/blog', blog.app_blog,
 		)
 
+render= render_mako(
+		directories=['templates'],
+		input_encoding='utf-8',
+		output_encoding='utf-8',
+		)
+
 class index:
-	""" index of site """
+	""" handler for landing page """
 	def GET(self):
-		shared = web.template.render('templates/shared')
-		globals = {
-			'template' : shared
-			}
-		render = web.template.render('templates', globals=globals)
-		return shared.layout(render.index(self))
+		return render.index()
+
 
 app = web.application(urls, globals())
 app = app.gaerun()
