@@ -2,11 +2,10 @@ from web.template import CompiledTemplate, ForLoop, TemplateResult
 
 
 # coding: utf-8
-def layout (content, title='rigmarole soup'):
-    __lineoffset__ = -4
+def layout():
+    __lineoffset__ = -5
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
-    extend_([u'\n'])
     extend_([u'<!DOCTYPE html>\n'])
     extend_([u'<html lang="en">\n'])
     extend_([u'  <head>\n'])
@@ -43,7 +42,7 @@ def layout (content, title='rigmarole soup'):
     extend_([u'\n'])
     extend_([u'  <body>\n'])
     extend_([u'\n'])
-    extend_([u'      ', escape_(content, False), u'\n'])
+    extend_([u'        ', escape_((self.body()), True), u'\n'])
     extend_([u'\n'])
     extend_([u'    <!-- Le javascript\n'])
     extend_([u'    ================================================== -->\n'])

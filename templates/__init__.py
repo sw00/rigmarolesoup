@@ -2,10 +2,12 @@ from web.template import CompiledTemplate, ForLoop, TemplateResult
 
 import admin, shared, blog
 # coding: utf-8
-def index (self):
-    __lineoffset__ = -4
+def index():
+    __lineoffset__ = -5
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
+    extend_([u'<%inherit file="layout.html"/>\n'])
+    extend_([u'\n'])
     extend_([u'<section id="content">\n'])
     extend_([u'<div class="row">\n'])
     extend_([u'                        <div class="span10">\n'])
@@ -47,9 +49,8 @@ def index (self):
     extend_([u'        </div>\n'])
     extend_([u'</div>\n'])
     extend_([u'</section>\n'])
-    extend_([u'<footer>\n'])
-    extend_([u'    ', escape_(template.footer(), False), u'\n'])
-    extend_([u'</footer>\n'])
+    extend_([u'\n'])
+    extend_([u'<%include file="footer.html"/>\n'])
 
     return self
 
