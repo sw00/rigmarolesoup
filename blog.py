@@ -19,6 +19,8 @@ render = render_mako(
 		output_encoding='utf-8',
 		)
 
+app_blog = web.application(urls, locals())
+
 class reblog:
     def GET(self):
         def GET(self): raise web.seeother('/')
@@ -39,7 +41,6 @@ class index:
 		return render.index(posts=posts, login_url=login_url, logout_url=logout_url)
 
 class create:
-
 	@classmethod
 	def create_form(cls):
 		#fetch the categories:
@@ -94,6 +95,9 @@ class create:
 
 	def POST(self):
 		#todo: CREATE post object and persist in data store.
+		if not users.is_current_user_admin():
+			raise web.Forbidden()
+
 		form = self.create_form()
 		if not form.validates():
 			return render.create(form=form)
@@ -102,4 +106,3 @@ class create:
 			#return render.preview(form.d)
 			raise web.seeother('/blog') 
 
-app_blog = web.application(urls, locals())

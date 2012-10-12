@@ -8,3 +8,4 @@ report.txt
 *.sh
 *.diff
 *\~
+*.swp
