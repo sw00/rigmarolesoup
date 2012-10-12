@@ -1,12 +1,30 @@
 <%inherit file="layout.html"/>
 <%include file="header.html"/>
 <div class="row">
+	<div class="span4 offset2 well well-small">
+		<h2>Category</h2>
+		<select>
+			<option value="All">All</option>
+			% for c in categories:
+			<option value="${c.key.urlsafe()}">${c.name}</option>
+			% endfor
+		</select>
+		<a class="btn btn-action pull-right">add</a>
+		<a class="btn btn-action pull-right">remove</a>
+	</div>
+	<div class="span6">
+		<p>
+		...
+		</p>
+	</div>`
+</div>
+<div class="row">
 	<div class="span10 offset2">
 		<div class="row">
-		<div class="span8">
-		<h1>Blog:List</h2>
+		<div class="span4">
+		<h1>Entries</h1>
 	</div>
-	<div class="span2">
+	<div class="span2 pull-right">
 		<a class="btn btn-action" href="/blog/create">
 			create
 		</a>
@@ -26,7 +44,11 @@
 			</tr>
 		% for p in posts:
 			<tr>
+			% if p.published:
+				<td><input type="checkbox" name="published" value="${p.published}" checked="checked"></input></td>
+			%else:
 				<td><input type="checkbox" name="published" value="${p.published}"></input></td>
+			%endif	
 				<td>${p.title}</td>
 				<td>${p.created}</td>
 				<td><a class="btn btn-mini btn-action" href="/blog/edit/${p.key.urlsafe()}">edit</a></td>

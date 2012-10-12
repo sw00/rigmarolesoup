@@ -8,7 +8,7 @@ from google.appengine.api import users
 
 urls = (
 		#'', 'reblog',
-		'/?$', 'index',
+		'^/?$', 'index',
 		'/list/?$', 'list',
 		'/create/?$', 'create',
 		'/p/([^/]*)/?$', 'post'
@@ -45,6 +45,8 @@ class index:
 class list:
 	@authorise
 	def GET(self):
+		categories = Category.query().order(Category.name).fetch()
+
 		q = Post.query().order(Post.created) 
 		results,cursor,more = q.fetch_page(10, projection=[
 			Post.created,
@@ -54,7 +56,7 @@ class list:
 		if cursor:
 			cursor = cursor.urlsafe()
 
-		return render.list(posts=results, cursor=cursor, more=more)
+		return render.list(categories=categories, posts=results, cursor=cursor, more=more)
 
 
 class create:
@@ -65,16 +67,16 @@ class create:
 		categories = q.fetch(10)
 
 		createform = form.Form(
-			form.Checkbox('published'),
+			form.Checkbox('published', value=True, checked='checked'),
 			form.Textbox('title'),
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+				r'[]|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'\w+|-', 
+				r'[]|\w+|-', 
 				'Invalid tag(s) entered.')
 				),
 			form.Button('submit', type='submit')
@@ -99,27 +101,22 @@ class create:
 				body = form_d.content.value,
 				references = references,
 				tags = tags,
-				published = form_d.published.checked)
+				published = form_d.published.value)
 		
 		post.put(parent=category)
 
+	@authorise
 	def GET(self):
-		if users.is_current_user_admin():
-			form = self.create_form()
-			return render.create(form=form)
-		else:
-			raise web.Forbidden()
+		form = self.create_form()
+		return render.create(form=form)
 
+	@authorise
 	def POST(self):
-		#todo: CREATE post object and persist in data store.
-		if not users.is_current_user_admin():
-			raise web.Forbidden()
-
 		form = self.create_form()
 		if not form.validates():
 			return render.create(form=form)
 		else:
 			p = self.consume_form(form)
 			#return render.preview(form.d)
-			raise web.seeother('/blog') 
+			raise web.seeother('/blog', True) 
 
