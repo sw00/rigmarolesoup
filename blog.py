@@ -50,8 +50,14 @@ class create:
 			form.Textbox('title'),
 			form.Dropdown('category', map(lambda x: (x.key, x.name), categories)), 
 			form.Textarea('content'),
-			form.Textarea('references', rows='4', cols='80'),
-			form.Textbox('tags'),
+			form.Textarea('references',form.regexp(
+				r'http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+				'Invalid URL(s) entered.'
+				), rows='4', cols='80'),
+			form.Textbox('tags', form.regexp(
+				r'\w+|-', 
+				'Invalid tag(s) entered.')
+				),
 			form.Button('submit', type='submit')
 			)
 
@@ -90,7 +96,7 @@ class create:
 		#todo: CREATE post object and persist in data store.
 		form = self.create_form()
 		if not form.validates():
-			return shared.layout(render.create(form))
+			return render.create(form=form)
 		else:
 			p = self.consume_form(form)
 			#return render.preview(form.d)
