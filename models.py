@@ -5,8 +5,9 @@ class Post(ndb.Model):
 	body = ndb.TextProperty()
 	references = ndb.TextProperty(repeated=True)
 	created = ndb.DateTimeProperty(auto_now_add=True)
-	category = ndb.KeyProperty()
+	#category = ndb.KeyProperty()
 	tags = ndb.StringProperty(repeated=True)
+	published = ndb.BooleanProperty(required=True)
 
 	@classmethod
 	def fetch_all(cls, *filters):
