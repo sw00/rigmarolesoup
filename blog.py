@@ -72,11 +72,11 @@ class create:
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'[]|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+				r'\B|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'[]|\w+|-', 
+				r'\B|w+|-', 
 				'Invalid tag(s) entered.')
 				),
 			form.Button('submit', type='submit')
