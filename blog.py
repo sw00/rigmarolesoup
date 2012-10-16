@@ -7,10 +7,9 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 urls = (
-		#'', 'reblog',
 		'^/?$', 'index',
 		'/list/?$', 'list',
-		'/create/?$', 'create',
+		'/create/(\w)/?', 'create',
 		'/p/([^/]*)/?$', 'post'
 		)
 
@@ -29,11 +28,6 @@ def authorise(func):
 		else:
 			return func(*args, **kwargs)
 	return decorate
-
-
-class reblog:
-    def GET(self):
-        def GET(self): raise web.seeother('/')
 
 class index:
 	def GET(self):
@@ -61,7 +55,7 @@ class list:
 
 class create:
 	@classmethod
-	def create_form(cls):
+	def create_post_form(cls):
 		#fetch the categories:
 		q = Category.query().order(Category.name)
 		categories = q.fetch(10)
@@ -72,11 +66,11 @@ class create:
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'\B|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+				r'\b|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'\B|w+|-', 
+				r'\b|w+|-', 
 				'Invalid tag(s) entered.')
 				),
 			form.Button('submit', type='submit')
@@ -85,7 +79,7 @@ class create:
 		return createform
 
 	@classmethod
-	def consume_form(cls, form_d):
+	def consume_post_form(cls, form_d):
 		references = form_d.references.value.split('\n')
 		references = map(lambda x: x.strip(), references)
 
@@ -101,22 +95,64 @@ class create:
 				body = form_d.content.value,
 				references = references,
 				tags = tags,
-				published = form_d.published.value)
+				published = form_d.published.value,
+				parent = category)
 		
-		post.put(parent=category)
+		return post.put()
+
+	@classmethod
+	def create_category_form(cls):
+		createform = form.Form(
+				form.Textbox('name', form.regexp(
+					r'[a-zA-Z ]', 'Invalid chars entered.')),
+				form.Textbox('desc'),
+				form.Button('submit', type='submit')
+				)
+
+		return createform
+
+	@classmethod
+	def consume_category_form(cls, form_d):
+		c = Category(
+				name = form_d.name.value,
+				desc = form_d.desc.value
+				)
+		
+		return c.put()	
+	
 
 	@authorise
-	def GET(self):
-		form = self.create_form()
-		return render.create(form=form)
-
-	@authorise
-	def POST(self):
-		form = self.create_form()
-		if not form.validates():
-			return render.create(form=form)
+	def GET(self, name):
+		if name == 'p':
+			form = self.create_post_form()
+			title = 'New Blog Post'
+		elif name == 'c':
+			form = self.create_category_form()
+			title = 'New Blog Category'
 		else:
-			p = self.consume_form(form)
-			#return render.preview(form.d)
-			raise web.seeother('/blog', True) 
+			raise web.badrequest()
+		
+		return render.create(title=title,form=form,mce_elms='content')
+
+	@authorise
+	def POST(self, name):
+		mce_elms = []
+		if name == 'p':
+			form = self.create_post_form()
+			title = 'New Blog Post'
+			name = 'post'
+			mce_elms.append('content')
+		elif name == 'c':
+			form = self.create_category_form()
+			title = 'New Blog Category'
+			name = 'category'
+		else:
+			raise web.badrequest()
+			
+		if not form.validates():
+			return render.create(title=title,mce_elms=mce_elms,form=form)
+		else:
+			method = 'consume_' + name + '_form'
+			getattr(self, method)(form)
+			raise web.seeother('/list') 
 
