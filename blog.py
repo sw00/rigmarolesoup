@@ -10,7 +10,7 @@ urls = (
 		'^/?$', 'index',
 		'/list/?$', 'list',
 		'/create/(\w)/?', 'create',
-		'/p/([^/]*)/?$', 'post'
+		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
 
 render = render_mako(
@@ -35,6 +35,12 @@ class index:
 		posts = Post.fetch_all().fetch(3)
 
 		return render.index(posts=posts)
+
+class post:
+	def GET(self, name):
+		p_key = ndb.Key(urlsafe=name)
+		return render.post(post=p_key.get())
+
 
 class list:
 	@authorise
