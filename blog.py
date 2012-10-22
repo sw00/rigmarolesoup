@@ -5,6 +5,8 @@ from models import Post
 from models import Category
 from google.appengine.ext import ndb
 from google.appengine.api import users
+import json
+import datetime
 
 urls = (
 		'^/?$', 'index',
@@ -33,8 +35,11 @@ class index:
 	def GET(self):
 		#get latest 3 blog posts
 		posts = Post.fetch_all().fetch(3)
+		
+		dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+		posts_json = map(lambda p: json.dumps(p.to_dict(), default=dthandler), posts)
 
-		return render.index(posts=posts)
+		return render.index(posts=posts, posts_json=posts_json)
 
 class post:
 	def GET(self, name):

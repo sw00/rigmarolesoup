@@ -38,7 +38,23 @@
 </section>
 
 <%include file="footer.html"/>
-
+<script src="/static/js/underscore-min.js"></script>
+<script src="/static/js/backbone-min.js"></script>
+<script src="/static/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" language="javascript">
-	
+	data = ${posts_json};
+
+	data = _.map(data, function(p){
+			return jQuery.parseJSON(p);
+		});
+
+	Entry = Backbone.Model.extend({
+		initiliaze: console.log('loaded!')
+	});
+
+	Entries = Backbone.Collection.extend({
+		model: Entry
+	});
+
+	entryObj = new Entry(data);	
 </script>
