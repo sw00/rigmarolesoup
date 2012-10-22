@@ -1,8 +1,5 @@
 <%inherit file="layout.html"/>
-<%block name="scripts">
-<script src="/static/js/underscore-min.js"></script>
-<script src="/static/js/backbone-min.js"></script>
-<script type="text/javascript" language="javascript">
+<%block name="javascript">
 	data = ${posts_json};
 
 	data = _.map(data, function(p){
@@ -18,7 +15,6 @@
 	});
 
 	entryObj = new Entry(data);	
-</script>
 </%block>
 
 <%include file="header.html"/>
