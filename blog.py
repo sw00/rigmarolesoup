@@ -83,14 +83,15 @@ class create:
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'\b|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+				r'[http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*]*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'\b|w+|-', 
+				r'[w+|-]*', 
 				'Invalid tag(s) entered.')
 				),
-			form.Button('submit', type='submit')
+			form.Button('submit', type='submit'),
+			style="width:100%;"
 			)
 
 		return createform
@@ -154,12 +155,12 @@ class create:
 	@authorise
 	def POST(self, name):
 		mce_elms = []
-		if name == 'p':
+		if name == 'post':
 			form = self.create_post_form()
 			title = 'New Blog Post'
 			name = 'post'
 			mce_elms.append('content')
-		elif name == 'c':
+		elif name == 'category':
 			form = self.create_category_form()
 			title = 'New Blog Category'
 			name = 'category'
