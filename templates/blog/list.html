@@ -1,17 +1,17 @@
 <%inherit file="layout.html"/>
 <%include file="header.html"/>
 <div class="row">
-	<div class="span10 offset2">
-		<h1>LIST</h1>
+	<div class="span10 offset2 ">
 	%if not categories is UNDEFINED:
-	<div class="row">
-		<div class="span8">
-		<h2>CATEGORIES</h2>
-	</div>
-	<div class="span2">
-		<a class="btn btn-action btn-large pull-right" href="/blog/create/category">CREATE</a>
-	</div>
-</div>
+	<ul class="nav nav-tabs">
+		<li>
+			<a href="/blog/list/post">POSTS</a>
+		</li>
+		<li class="active">
+			<a href="/blog/list/category">CATEGORIES</a>
+		</li>
+	</ul>
+	<p><a class="btn btn-primary btn-large" href="/blog/create/category">CREATE</a></p>
 		<table class="table table-striped">
 			<tr>
 				<th>name</th>
@@ -23,19 +23,21 @@
 			<tr>
 				<td>${c.name}</td>
 				<td>${c.description}</td>
-				<td><a class="btn btn-mini btn-action" href="/blog/edit/${c.key.urlsafe()}">edit</a></td>
-				<td><a class="btn btn-mini btn-action" href="/blog/delete/${c.key.urlsafe()}">delete</a></td>
+				<td><a class="btn btn-mini btn-link" href="/blog/edit/${c.key.urlsafe()}">edit</a></td>
+				<td><a class="btn btn-mini btn-danger" href="/blog/delete/${c.key.urlsafe()}">delete</a></td>
 		%endfor
 			</table>	
 	%elif not posts is UNDEFINED:
-	<div class="row">
-		<div class="span8">
-		<h2>POSTS</h2>	
-	</div>
-		<div class="span2">
-			<a class="btn btn-action btn-large pull-right" href="/blog/create/post">CREATE</a>
-		</div>
-	</div>
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="/blog/list/post">POSTS</a>
+		</li>
+		<li> 
+			<a href="/blog/list/category">CATEGORIES</a>
+		</li>
+	</ul>
+	<p>	<a class="btn btn-primary btn-large" href="/blog/create/post">CREATE</a>
+	</p>
 		<table class="table table-striped">
 			<tr>
 				<th>published</th>
@@ -53,13 +55,12 @@
 			%endif	
 				<td>${p.title}</td>
 				<td>${p.created}</td>
-				<td><a class="btn btn-mini btn-action" href="/blog/edit/${p.key.urlsafe()}">edit</a></td>
-				<td><a class="btn btn-mini btn-action" href="/blog/delete/${p.key.urlsafe()}">delete</a></td>
+				<td><a class="btn btn-mini btn-link" href="/blog/edit/${p.key.urlsafe()}">edit</a></td>
+				<td><a class="btn btn-mini btn-danger" href="/blog/delete/${p.key.urlsafe()}">delete</a></td>
 			</tr>
 		% endfor
 	</table>
 	%endif
-	</div>
 </div>
 
 <%include file="footer.html"/>
