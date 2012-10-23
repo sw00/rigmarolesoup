@@ -1,5 +1,6 @@
 <%inherit file="layout.html"/>
-
+<%include file="header.html"/>
+<%block name="create">
 <div class="row">
 	<div class="span10 offset2">
 <form name="create" method="POST">
@@ -20,3 +21,5 @@
 		height : "400"
 	});
 </script>
+</%block>
+<%include file="footer.html"/>
