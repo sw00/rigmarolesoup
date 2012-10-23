@@ -4,7 +4,14 @@
 	<div class="span10 offset2">
 		<h1>LIST</h1>
 	%if not categories is UNDEFINED:
+	<div class="row">
+		<div class="span8">
 		<h2>CATEGORIES</h2>
+	</div>
+	<div class="span2">
+		<a class="btn btn-action btn-large pull-right" href="/blog/create/category">CREATE</a>
+	</div>
+</div>
 		<table class="table table-striped">
 			<tr>
 				<th>name</th>
@@ -21,7 +28,14 @@
 		%endfor
 			</table>	
 	%elif not posts is UNDEFINED:
+	<div class="row">
+		<div class="span8">
 		<h2>POSTS</h2>	
+	</div>
+		<div class="span2">
+			<a class="btn btn-action btn-large pull-right" href="/blog/create/post">CREATE</a>
+		</div>
+	</div>
 		<table class="table table-striped">
 			<tr>
 				<th>published</th>

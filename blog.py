@@ -11,7 +11,7 @@ import datetime
 urls = (
 		'^/?$', 'index',
 		'/list/(\w+)/?$', 'list',
-		'/create/(\w)/?', 'create',
+		'/create/(\w+)/?$', 'create',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
 
@@ -140,10 +140,10 @@ class create:
 
 	@authorise
 	def GET(self, name):
-		if name == 'p':
+		if name == 'post':
 			form = self.create_post_form()
 			title = 'New Blog Post'
-		elif name == 'c':
+		elif name == 'category':
 			form = self.create_category_form()
 			title = 'New Blog Category'
 		else:
