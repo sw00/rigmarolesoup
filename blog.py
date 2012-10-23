@@ -10,6 +10,7 @@ import datetime
 
 urls = (
 		'^/?$', 'index',
+		'/list/?', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
@@ -46,6 +47,9 @@ class post:
 		p_key = ndb.Key(urlsafe=name)
 		return render.post(post=p_key.get())
 
+class relist:
+	def GET(self):
+		raise web.seeother('/list/post')
 
 class list:
 	@authorise
@@ -68,7 +72,7 @@ class list:
 
 			return render.list(posts=results, cursor=cursor, more=more)
 		else:
-			raise web.badrequest()
+			raise web.seeother('/blog/list/post')
 
 class create:
 	@classmethod
