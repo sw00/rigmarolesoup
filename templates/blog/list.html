@@ -1,39 +1,27 @@
 <%inherit file="layout.html"/>
 <%include file="header.html"/>
 <div class="row">
-	<div class="span4 offset2 well well-small">
-		<h2>Category</h2>
-		<select>
-			<option value="All">All</option>
-			% for c in categories:
-			<option value="${c.key.urlsafe()}">${c.name}</option>
-			% endfor
-		</select>
-		<a class="btn btn-action pull-right">add</a>
-		<a class="btn btn-action pull-right">remove</a>
-	</div>
-	<div class="span6">
-		<p>
-		...
-		</p>
-	</div>`
-</div>
-<div class="row">
 	<div class="span10 offset2">
-		<div class="row">
-		<div class="span4">
-		<h1>Entries</h1>
-	</div>
-	<div class="span2 pull-right">
-		<a class="btn btn-action" href="/blog/create">
-			create
-		</a>
-	</div>
-</div>
-	</div>
-</div>
-<div class="row">
-	<div class="span10 offset2">
+		<h1>LIST</h1>
+	%if not categories is UNDEFINED:
+		<h2>CATEGORIES</h2>
+		<table class="table table-striped">
+			<tr>
+				<th>name</th>
+				<th>description</th>
+				<th>edit</th>
+				<th>delete</th>
+			</tr>
+		%for c in categories:
+			<tr>
+				<td>${c.name}</td>
+				<td>${c.description}</td>
+				<td><a class="btn btn-mini btn-action" href="/blog/edit/${c.key.urlsafe()}">edit</a></td>
+				<td><a class="btn btn-mini btn-action" href="/blog/delete/${c.key.urlsafe()}">delete</a></td>
+		%endfor
+			</table>	
+	%elif not posts is UNDEFINED:
+		<h2>POSTS</h2>	
 		<table class="table table-striped">
 			<tr>
 				<th>published</th>
@@ -56,6 +44,7 @@
 			</tr>
 		% endfor
 	</table>
+	%endif
 	</div>
 </div>
 

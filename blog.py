@@ -10,7 +10,7 @@ import datetime
 
 urls = (
 		'^/?$', 'index',
-		'/list/?$', 'list',
+		'/list/(\w+)/?$', 'list',
 		'/create/(\w)/?', 'create',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
@@ -49,20 +49,26 @@ class post:
 
 class list:
 	@authorise
-	def GET(self):
-		categories = Category.query().order(Category.name).fetch()
+	def GET(self, name):
+		if name.lower() == 'category':
+			q = Category.query().order(Category.name)
+			results, cursor, more = q.fetch_page(10)
 
-		q = Post.query().order(Post.created) 
-		results,cursor,more = q.fetch_page(10, projection=[
-			Post.created,
-			Post.title,
-			Post.published])
+			if cursor: cursor = cursor.urlsafe()
 
-		if cursor:
-			cursor = cursor.urlsafe()
+			return render.list(categories=results, cursor=cursor, more=more)
+		elif name.lower() == 'post':
+			q = Post.query().order(Post.created) 
+			results,cursor,more = q.fetch_page(10, projection=[
+				Post.created,
+				Post.title,
+				Post.published])
+			
+			if cursor: cursor = cursor.urlsafe()
 
-		return render.list(categories=categories, posts=results, cursor=cursor, more=more)
-
+			return render.list(posts=results, cursor=cursor, more=more)
+		else:
+			raise web.badrequest()
 
 class create:
 	@classmethod
