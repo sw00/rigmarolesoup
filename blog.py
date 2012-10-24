@@ -13,6 +13,8 @@ urls = (
 		'/list/?', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
+		'/edit/(\w+)/?$', 'update',
+		'/delete/(\w+)/?$', 'delete',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
 
@@ -50,7 +52,10 @@ class post:
 class relist:
 	@authorise
 	def GET(self):
-		raise web.seeother('/list/post')
+		if not users.is_current_user_admin():
+			raise web.seeother(users.create_login_url('/blog/list/post'))
+		else:
+			raise web.seeother('/list/post')
 
 class list:
 	@authorise
@@ -88,11 +93,11 @@ class create:
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'(http://[a-zA-Z.\d/#?&]*)*|(www.[a-zA-Z.\d/#?&]*)*',
+				r'^$|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'[w+|-]*', 
+				r'^$|w+|-', 
 				'Invalid tag(s) entered.')
 				),
 			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
@@ -177,4 +182,19 @@ class create:
 			method = 'consume_' + name + '_form'
 			getattr(self, method)(form)
 			raise web.seeother('/list') 
+
+class delete:
+	def GET(self, key): 
+		raise web.notimplemented()
+
+	def POST(self, key):
+		raise web.notimplemented()
+
+class update:
+	def GET(self):
+		raise web.notimplemented()
+
+	def POST(self):
+		raise web.notimplemented()
+
 
