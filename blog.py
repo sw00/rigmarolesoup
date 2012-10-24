@@ -94,7 +94,7 @@ class create:
 				r'[w+|-]*', 
 				'Invalid tag(s) entered.')
 				),
-			form.Button('submit', type='submit')
+			form.Button('submit', _type='submit', _class='btn btn-primary btn-large')
 			)
 
 		return createform
@@ -127,7 +127,7 @@ class create:
 				form.Textbox('name', form.regexp(
 					r'[a-zA-Z ]', 'Invalid chars entered.')),
 				form.Textbox('desc'),
-				form.Button('submit', type='submit')
+				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
 				)
 
 		return createform
