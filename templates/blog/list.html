@@ -22,7 +22,7 @@
 		%for c in categories:
 			<tr>
 				<td>${c.name}</td>
-				<td>${c.description}</td>
+				<td>${c.desc}</td>
 				<td><a class="btn btn-mini btn-link" href="/blog/edit/${c.key.urlsafe()}">edit</a></td>
 				<td><a class="btn btn-mini btn-danger" href="/blog/delete/${c.key.urlsafe()}">delete</a></td>
 		%endfor

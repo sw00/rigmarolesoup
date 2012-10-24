@@ -94,8 +94,7 @@ class create:
 				r'[w+|-]*', 
 				'Invalid tag(s) entered.')
 				),
-			form.Button('submit', type='submit'),
-			style="width:100%;"
+			form.Button('submit', type='submit')
 			)
 
 		return createform
