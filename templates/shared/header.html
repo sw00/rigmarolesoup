@@ -1,19 +1,10 @@
-<%
-	from google.appengine.api import users
-	user = users.get_current_user()
-%>
-
 <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
 		  <div class="container">
 			  <a class="brand" href="/blog">blog.rigmarolesoup</a>
           <div class="nav-collapse collapse pull-right">
 			  <ul class="nav">
-				% if user:
-				<li><a href="${users.create_logout_url('/blog')}">logout</a></li>
-				% else:
-				<li><a href="${users.create_login_url('/blog/list')}">login</a></li>
-				% endif
+				<li><a href="/blog/list">admin</a></li>
             </ul>
 		</div><!--/.nav-collapse -->
 	</div>

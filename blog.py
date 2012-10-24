@@ -48,6 +48,7 @@ class post:
 		return render.post(post=p_key.get())
 
 class relist:
+	@authorise
 	def GET(self):
 		raise web.seeother('/list/post')
 
@@ -87,14 +88,14 @@ class create:
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
 			form.Textarea('references',form.regexp(
-				r'[http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*]*',
+				r'(http://[a-zA-Z.\d/#?&]*)*|(www.[a-zA-Z.\d/#?&]*)*',
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
 				r'[w+|-]*', 
 				'Invalid tag(s) entered.')
 				),
-			form.Button('submit', _type='submit', _class='btn btn-primary btn-large')
+			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
 			)
 
 		return createform
