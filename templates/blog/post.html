@@ -3,11 +3,19 @@
 <%include file="header.html"/>
 
 <div class="row">
-	<div class="span8 offset2">
-		<h1>${post.title}</h1>
+	<div class="span6 offset2">
+		<article>
+		<header>
+			<div class="title">${post.title}</div>
+			<p><strong>${post.created.strftime('%d %B %Y')}</strong></p>
+		</header>
 		<div class="content">
 			${post.body}
 		</div>
+		<footer>
+			<hr/>
+		</footer>
+		</article>
 	</div>
 </div>
 

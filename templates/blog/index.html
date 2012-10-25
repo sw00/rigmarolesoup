@@ -24,7 +24,7 @@
 	% for p in posts:
 		<article>
 		<header> 
-		<div class="title"><a href="p/${p.title}" title="${p.title}">${p.title}</a></div>
+		<div class="title"><a href="/blog/p/${p.key.urlsafe()}">${p.title}</a></div>
 		<p><strong>${p.created.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">

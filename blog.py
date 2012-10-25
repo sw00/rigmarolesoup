@@ -10,12 +10,12 @@ import datetime
 
 urls = (
 		'^/?$', 'index',
-		'/list/?', 'relist',
+		'/p/(.*)/?$', 'post',
+		'/list/?$', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
 		'/edit/(.*)/?$|/?$', 'update',
-		'/delete/(.*)/?$|/?$', 'delete',
-		'/p/([a-zA-Z0-9-]+)/?', 'post'
+		'/delete/(.*)/?$|/?$', 'delete'
 		)
 
 render = render_mako(
@@ -45,9 +45,9 @@ class index:
 		return render.index(posts=posts, posts_json=posts_json)
 
 class post:
-	def GET(self, name):
-		p_key = ndb.Key(urlsafe=name)
-		return render.post(post=p_key.get())
+	def GET(self, key):
+		post = ndb.Key(urlsafe=key).get()
+		return render.post(post=post)
 
 class relist:
 	@authorise
