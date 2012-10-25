@@ -3,7 +3,7 @@
 
 
 @font-face {
-    font-family: 'Computer Modern Italic', serif;
+    font-family: 'Computer Modern Italic';
     src: url('/static/font/cmunoti-webfont.eot');
     src: url('/static/font/cmunoti-webfont.eot?#iefix') format('embedded-opentype'),
          url('/static/font/cmunoti-webfont.woff') format('woff'),
@@ -17,7 +17,7 @@
 
 
 @font-face {
-    font-family: 'Computer Modern Bold', serif;
+    font-family: 'Computer Modern Bold';
     src: url('/static/font/cmunrb-webfont.eot');
     src: url('/static/font/cmunrb-webfont.eot?#iefix') format('embedded-opentype'),
          url('/static/font/cmunrb-webfont.woff') format('woff'),
@@ -31,7 +31,7 @@
 
 
 @font-face {
-    font-family: 'Computer Modern', serif;
+    font-family: 'Computer Modern';
     src: url('/static/font/cmunrm-webfont.eot');
     src: url('/static/font/cmunrm-webfont.eot?#iefix') format('embedded-opentype'),
          url('/static/font/cmunrm-webfont.woff') format('woff'),
@@ -45,7 +45,7 @@
 
 
 @font-face {
-    font-family: 'Computer Modern Cursive', cursive;
+    font-family: 'Computer Modern Cursive';
     src: url('/static/font/cmunui-webfont.eot');
     src: url('/static/font/cmunui-webfont.eot?#iefix') format('embedded-opentype'),
          url('/static/font/cmunui-webfont.woff') format('woff'),
