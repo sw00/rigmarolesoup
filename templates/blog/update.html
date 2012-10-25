@@ -1,0 +1,24 @@
+<%inherit file="layout.html"/>
+<%include file="header.html"/>
+
+<div class="row">
+	<div class="span10 offset1">
+<form name="create" method="POST">
+	<legend>${title}</legend>
+	${form.render()}
+</form>
+</div>
+</div>
+<script type="text/javascript" src="/static/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+	tinyMCE.init({
+		mode : "exact",
+		elements: "${mce_elms}",
+		theme: "simple",
+		plugins: "autolink,spellchecker,pagebreak",
+
+		width : "100%",
+		height : "400"
+	});
+</script>
+<%include file="footer.html"/>

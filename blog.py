@@ -13,8 +13,8 @@ urls = (
 		'/list/?', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
-		'/edit/(.*)/?$', 'update',
-		'/delete/(.*)/?|/?$', 'delete',
+		'/edit/(.*)/?$|/?$', 'update',
+		'/delete/(.*)/?$|/?$', 'delete',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
 
@@ -209,7 +209,6 @@ class update:
 	@classmethod
 	def create_update_form(cls, entity=None):
 		if entity.key.kind() == 'Post':
-			mce_elms = [].append('content')
 			q = Category.query().order(Category.name)
 			categories = q.fetch(10)
 
@@ -230,7 +229,6 @@ class update:
 				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
 				)
 		elif entity.key.kind() == 'Category':
-			mce_elms = []
 			createform = form.Form(
 				form.Textbox('name', form.regexp(
 					r'[a-zA-Z ]', 'Invalid chars entered.'),
@@ -239,17 +237,36 @@ class update:
 				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
 				)
 
-		return createform, mce_elms 
+		return createform
 
 
 	@authorise
 	def GET(self, key):
 		entity = ndb.Key(urlsafe=key).get()
-		form,mce_elms = self.create_update_form(entity)
+		form = self.create_update_form(entity)
 
 		return render.update(form=form, title='Update %s' % entity.key.kind(), mce_elms='content')
 
-	def POST(self):
-		raise web.notimplemented()
+	def POST(self, key):
+		entity = ndb.Key(urlsafe=key).get()
+		form = self.create_update_form(entity)
+		
+		if form.validates():
+			if entity.key.kind() == 'Post':
+				entity.title = form.title.value
+				entity.body = form.content.value
+				entity.references = form.references.value.split(' ')
+				entity.tags = form.tags.value.split(' ')
+				entity.published = form.published.value
 
+				entity.put()
+				return web.seeother('/blog/list/post', True)
+			elif entity.key.kind() == 'Category':
+				entity.name = form.name.value
+				entity.desc= form.desc.value
+				
+				entity.put()
+				return web.seeother('/blog/list/category', True)
+			else:
+				return web.badrequest()
 
