@@ -13,7 +13,7 @@ urls = (
 		'/list/?', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
-		'/edit/(\w+)/?$', 'update',
+		'/edit/(.*)/?$', 'update',
 		'/delete/(.*)/?|/?$', 'delete',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
@@ -206,9 +206,48 @@ class delete:
 		raise web.seeother('/blog/list', True)
 
 class update:
+	@classmethod
+	def create_update_form(cls, entity=None):
+		if entity.key.kind() == 'Post':
+			mce_elms = [].append('content')
+			q = Category.query().order(Category.name)
+			categories = q.fetch(10)
+
+			createform = form.Form(
+				form.Checkbox('published', value=entity.published, checked='checked'),
+				form.Textbox('title', value=entity.title),
+				form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
+				form.Textarea('content', value=entity.body),
+				form.Textarea('references', form.regexp(
+					r'^$|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
+					'Invalid URL(s) entered.'
+					), value=reduce(lambda x,y: x + ' ' + y, entity.references), rows='4', cols='80'),
+				form.Textbox('tags', form.regexp(
+					r'^$|\w+|-', 
+					'Invalid tag(s) entered.'),
+					value=reduce(lambda x,y: x + ' ' + y, entity.tags)
+					),
+				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
+				)
+		elif entity.key.kind() == 'Category':
+			mce_elms = []
+			createform = form.Form(
+				form.Textbox('name', form.regexp(
+					r'[a-zA-Z ]', 'Invalid chars entered.'),
+					value=entity.name),
+				form.Textbox('desc', value=entity.desc),
+				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
+				)
+
+		return createform, mce_elms 
+
+
+	@authorise
 	def GET(self, key):
-		
-		raise web.notimplemented()
+		entity = ndb.Key(urlsafe=key).get()
+		form,mce_elms = self.create_update_form(entity)
+
+		return render.update(form=form, title='Update %s' % entity.key.kind(), mce_elms='content')
 
 	def POST(self):
 		raise web.notimplemented()
