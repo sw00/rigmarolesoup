@@ -14,7 +14,7 @@ urls = (
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
 		'/edit/(\w+)/?$', 'update',
-		'/delete/(\w+)/?$', 'delete',
+		'/delete/(.*)/?|/?$', 'delete',
 		'/p/([a-zA-Z0-9-]+)/?', 'post'
 		)
 
@@ -97,7 +97,7 @@ class create:
 				'Invalid URL(s) entered.'
 				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
-				r'^$|w+|-', 
+				r'^$|\w+|-', 
 				'Invalid tag(s) entered.')
 				),
 			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
@@ -184,14 +184,30 @@ class create:
 			raise web.seeother('/list') 
 
 class delete:
-	def GET(self, key): 
-		raise web.notimplemented()
+	@classmethod
+	def create_delete_form(cls, key): 
+		return form.Form(
+			form.Hidden('key', value=key),
+			form.Button('submit', type_='submit'),
+			form.Button('cancel', type_='cancel')
+			)
 
+	@authorise
+	def GET(self, key): 
+		form = self.create_delete_form(key)
+		return render.delete(form=form)
+		
+	@authorise
 	def POST(self, key):
-		raise web.notimplemented()
+		form = self.create_delete_form(key)
+		m = ndb.Key(urlsafe=form.key.value)
+		m.delete()
+
+		raise web.seeother('/blog/list', True)
 
 class update:
-	def GET(self):
+	def GET(self, key):
+		
 		raise web.notimplemented()
 
 	def POST(self):
