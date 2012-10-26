@@ -96,7 +96,7 @@ class Controller:
 
 	
 	def _json(self, model):
-		dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+		dthandler = lambda obj: obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 		return json.dumps(model.to_dict(), default=dthandler)
 		
