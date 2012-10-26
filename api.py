@@ -12,9 +12,9 @@ urls = (
 		)
 
 render = render_mako(
-		directories=['/templates/shared', 'templates/blog'],
+		directories=['templates/shared', 'templates/blog', 'templates/blog/models'],
 		input_encoding='utf-8',
-		output_encoding='utf-8',
+		output_encoding='utf-8'
 		)
 
 app = web.application(urls, locals())
@@ -40,18 +40,23 @@ class Controller:
 	def GET(self, key=None):
 		model = ndb.Key(urlsafe=key).get()
 		
-		if model:
-			model_json = self._json(model)  #converts model to json string
-		else:
-			model_json = None
-
+		if not model:
+			raise web.notfound('Oopsy! It seems there\'s nothing here.')
+		
 		template = self.entity.__name__
 		data = {
 				'model' : model,
-				'json' : model_json
 				}
 
-		return getattr(render, template)(data)
+		if web.ctx.env.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+			web.header('Content-Type', 'application/json')
+			return self._json(model)
+		else:
+			template = self.entity.__name__
+			data = {
+				'model' : model,
+				}
+			return getattr(render, template)(**data)
 
 	@authorise
 	def POST(self, key=None):
@@ -65,7 +70,7 @@ class Controller:
 				'key' : key
 				}
 
-		return getattr(render, template)(data)
+		return getattr(render, template)(**data)
 
 	@authorise
 	def PUT(self, key=None):
@@ -83,9 +88,9 @@ class Controller:
 				'key' : key
 			}
 
-		return getattr(render, template)(data)
+		return getattr(render, template)(**data)
 
-	@authorise	
+	@authorise
 	def DELETE(self, key=None):
 		k = ndb.Key(urlsafe=key)
 		k.delete()
@@ -94,7 +99,7 @@ class Controller:
 
 	
 	def _json(self, model):
-		dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+		dthandler = lambda obj: obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 		return json.dumps(model.to_dict(), default=dthandler)
 		

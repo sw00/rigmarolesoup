@@ -25,10 +25,10 @@
 		<article>
 		<header> 
 		<div class="title"><a href="/blog/p/${p.key.urlsafe()}">${p.title}</a></div>
-		<p><strong>${p.created.strftime('%d %B %Y')}</strong></p>
+		<p><strong>${p.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
-			${p.body}
+			${p.content}
 			</div>
 			<footer>
 			<hr/>

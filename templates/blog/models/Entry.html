@@ -1,0 +1,26 @@
+<%
+	if not model:
+		return
+	
+	key_id = model.key.urlsafe()
+%>
+<%inherit file="layout.html"/>
+<%include file="header.html"/>
+	<article data-id="${key_id}">
+		<header>
+			<div class="title">${model.title}</div>
+			<div class="date">${model.timestamp.strftime('%d %B %Y')}</div>
+		</header>
+		<div class="content">
+			${model.content}
+		</div>
+		<footer>
+			<p>
+				%for t in model.tags:
+					<span class="label">${t}</span>
+				%endfor
+			</p>
+			<hr />
+		</footer>
+	</article>
+<%include file="footer.html"/>
