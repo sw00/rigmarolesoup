@@ -39,6 +39,9 @@ class Controller:
 
 	def GET(self, key=None):
 		model = ndb.Key(urlsafe=key).get()
+
+		if not model:
+			raise web.notfound('Oopsy! It seems there\'s nothing here.')
 		
 		template = self.entity.__name__
 		data = {
@@ -87,7 +90,7 @@ class Controller:
 
 		return getattr(render, template)(**data)
 
-	@authorise	
+	@authorise
 	def DELETE(self, key=None):
 		k = ndb.Key(urlsafe=key)
 		k.delete()
