@@ -40,15 +40,20 @@ class Controller:
 	def GET(self, key=None):
 		model = ndb.Key(urlsafe=key).get()
 		
-		model_json = self._json(model)  #converts model to json string
-
 		template = self.entity.__name__
 		data = {
 				'model' : model,
-				'json' : model_json
 				}
 
-		return getattr(render, template)(**data)
+		if web.ctx.env.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+			web.header('Content-Type', 'application/json')
+			return self._json(model)
+		else:
+			template = self.entity.__name__
+			data = {
+				'model' : model,
+				}
+			return getattr(render, template)(**data)
 
 	@authorise
 	def POST(self, key=None):
