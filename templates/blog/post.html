@@ -7,10 +7,10 @@
 		<article>
 		<header>
 			<div class="title">${post.title}</div>
-			<p><strong>${post.created.strftime('%d %B %Y')}</strong></p>
+			<p><strong>${post.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
-			${post.body}
+			${post.content}
 		</div>
 		<footer>
 			<hr/>
