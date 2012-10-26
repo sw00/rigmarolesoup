@@ -1,7 +1,7 @@
 import web
 from web.contrib.template import render_mako
 from web import form
-from models import Post
+from models import Entry as Post
 from models import Category
 from google.appengine.ext import ndb
 from google.appengine.api import users
@@ -37,7 +37,7 @@ def authorise(func):
 class index:
 	def GET(self):
 		#get latest 3 blog posts
-		posts = Post.fetch_all().fetch(3)
+		posts = Post.query().fetch(3)
 		
 		dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
 		posts_json = map(lambda p: json.dumps(p.to_dict(), default=dthandler), posts)
@@ -68,9 +68,9 @@ class list:
 
 			return render.list(categories=results, cursor=cursor, more=more)
 		elif name.lower() == 'post':
-			q = Post.query().order(Post.created) 
+			q = Post.query().order(Post.timestamp) 
 			results,cursor,more = q.fetch_page(10, projection=[
-				Post.created,
+				Post.timestamp,
 				Post.title,
 				Post.published])
 			
@@ -92,10 +92,6 @@ class create:
 			form.Textbox('title'),
 			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
 			form.Textarea('content'),
-			form.Textarea('references',form.regexp(
-				r'^$|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
-				'Invalid URL(s) entered.'
-				), rows='4', cols='80'),
 			form.Textbox('tags', form.regexp(
 				r'^$|\w+|-', 
 				'Invalid tag(s) entered.')
@@ -107,9 +103,6 @@ class create:
 
 	@classmethod
 	def consume_post_form(cls, form_d):
-		references = form_d.references.value.split('\n')
-		references = map(lambda x: x.strip(), references)
-
 		category = form_d.category.value
 		if category:
 			category = ndb.Key(urlsafe=category)
@@ -119,8 +112,7 @@ class create:
 
 		post = Post(
 				title = form_d.title.value,
-				body = form_d.content.value,
-				references = references,
+				content = form_d.content.value,
 				tags = tags,
 				published = form_d.published.value,
 				parent = category)
@@ -216,11 +208,7 @@ class update:
 				form.Checkbox('published', value=entity.published, checked='checked'),
 				form.Textbox('title', value=entity.title),
 				form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
-				form.Textarea('content', value=entity.body),
-				form.Textarea('references', form.regexp(
-					r'^$|http://[a-zA-Z.\d/#?&]*|www.[a-zA-Z.\d/#?&]*',
-					'Invalid URL(s) entered.'
-					), value=reduce(lambda x,y: x + ' ' + y, entity.references), rows='4', cols='80'),
+				form.Textarea('content', value=entity.content),
 				form.Textbox('tags', form.regexp(
 					r'^$|\w+|-', 
 					'Invalid tag(s) entered.'),
@@ -255,8 +243,7 @@ class update:
 		if form.validates():
 			if entity.key.kind() == 'Post':
 				entity.title = form.title.value
-				entity.body = form.content.value
-				entity.references = form.references.value.split(' ')
+				entity.content = form.content.value
 				entity.tags = form.tags.value.split(' ')
 				entity.published = form.published.value
 

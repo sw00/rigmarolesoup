@@ -1,12 +1,12 @@
 import web
-import admin
 import blog
+import api
 from web.contrib.template import render_mako
 
 urls = (
 		'/', 'index',
-		'/admin', admin.app_admin,
 		'/blog', blog.app_blog,
+		'/api', api.app
 		)
 
 render= render_mako(

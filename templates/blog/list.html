@@ -54,7 +54,7 @@
 				<td><input type="checkbox" name="published" value="${p.published}"></input></td>
 			%endif	
 				<td>${p.title}</td>
-				<td>${p.created}</td>
+				<td>${p.timestamp}</td>
 				<td><a class="btn btn-mini btn-link" href="/blog/edit/${p.key.urlsafe()}">edit</a></td>
 				<td><a class="btn btn-mini btn-danger" href="/blog/delete/${p.key.urlsafe()}">delete</a></td>
 			</tr>
