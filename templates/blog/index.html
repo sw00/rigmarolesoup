@@ -18,14 +18,25 @@
 </%block>
 
 <%include file="header.html"/>
-
-<div class="row" >
-	<div class="span6 offset2"> 
+<div class="container" >
+	<div class="six columns nav">
+		<input text></input>
+		<nav>
+			<ul>
+				<li>one</li>
+				<li>two</li>
+				<li>three</li>
+				<li>four</li>
+				<li>five</li>
+			</ul>
+		</nav>
+	</div>
+	<div class="eight columns"> 
 	% for p in posts:
 		<article>
 		<header> 
-		<div class="title"><a href="/blog/p/${p.key.urlsafe()}">${p.title}</a></div>
-		<p><strong>${p.timestamp.strftime('%d %B %Y')}</strong></p>
+		<h2><a href="/blog/p/${p.key.urlsafe()}">${p.title}</a></h2>
+		<h5><strong>${p.timestamp.strftime('%d %B %Y')}</strong></h5>
 		</header>
 		<div class="content">
 			${p.content}
@@ -35,11 +46,6 @@
 			</footer>
 	</article>
 	% endfor
-</div>
-<div class="span3 offset1" id="aside">
-	<form id="search" action="search" method="POST">
-		<input type="search" placeholder="search..."></input>
-	</form>
 </div>
 </div>
 
