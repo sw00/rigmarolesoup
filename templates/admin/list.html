@@ -1,0 +1,79 @@
+<%inherit file="layout.html"/>
+<%include file="header.html"/>
+<%block name="stylesheets">
+	<link href="/css/admin.css" rel="stylesheet" />
+</%block>
+
+<div class="container">
+	<div class="sixteen columns">
+	%if not categories is UNDEFINED:
+	<div class="row">
+		<div class="four columns">
+			<h2>CATEGORIES</h2>
+		</div>
+		<div class="four columns">
+			<h4><a href="/admin/list/entry">ENTRIES</a></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="six columns">
+			<h3><a href="/admin/create/category">CREATE NEW</a></h3>
+		</div>
+	</div>
+	<div class="row">
+		<table class="table table-striped">
+			<tr>
+				<th>name</th>
+				<th>description</th>
+				<th>delete</th>
+			</tr>
+		%for c in categories:
+			<tr>
+				<td><a href="/admin/edit/${c.key.urlsafe()}">${c.name}</a></td>
+				<td>${c.desc}</td>
+				<td><a class="btn btn-mini btn-danger" href="/admin/delete/${c.key.urlsafe()}">delete</a></td>
+		%endfor
+			</table>	
+		</div>
+	%elif not posts is UNDEFINED:
+	<div class="row">
+		<div class="four columns">
+			<h2>ENTRIES</h2>
+		</div>
+		<div class="four columns">
+			<h4><a href="/admin/list/category">CATEGORIES</a></h4>
+		</div>
+	</div>
+	<div class="row">
+		<div class="six columns">
+			<h3><a href="/admin/create/entry">CREATE NEW</a></h3>
+		</div>
+	</div>
+	</ul>
+	</p>
+		<table class="table table-striped">
+			<tr>
+				<th>published</th>
+				<th>title</th>
+				<th>created</th>
+				<th>delete</th>
+			</tr>
+		% for p in posts:
+			<tr>
+			% if p.published:
+				<td><input type="checkbox" name="published" value="${p.published}" checked="checked"></input></td>
+			%else:
+				<td><input type="checkbox" name="published" value="${p.published}"></input></td>
+			%endif	
+			<td><a href="/admin/edit/${p.key.urlsafe()}">${p.title}</a></td>
+				<td>${p.timestamp.strftime('%d %B %Y')}</td>
+				<td><a class="btn btn-mini btn-danger" href="/admin/delete/${p.key.urlsafe()}">delete</a></td>
+			</tr>
+		% endfor
+	</table>
+	%endif
+</div>
+</div>
+</div>
+
+<%include file="footer.html"/>
