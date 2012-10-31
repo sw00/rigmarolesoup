@@ -25,10 +25,6 @@ handlers:
   script: main.app
   login: admin
 
-- url: /blog/list/?
-  script: main.app
-  login: admin
-
 - url: .*
   script: main.app
 

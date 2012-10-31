@@ -6,7 +6,7 @@ from web.contrib.template import render_mako
 
 urls = (
 		'/', 'index',
-		'/blog', blog.app_blog,
+		'/blog', blog.app,
 		'/api', api.app,
 		'/admin', admin.app
 		)
