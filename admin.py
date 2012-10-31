@@ -1,12 +1,10 @@
 import web
 from web.contrib.template import render_mako
 from web import form
-from models import Entry 
-from models import Category
+from models import Entry, Category
 from google.appengine.ext import ndb
 from google.appengine.api import users
-import json
-import datetime
+import re
 
 urls = (
 		'/?$', 'index',
@@ -34,12 +32,12 @@ def create_form(entity):
 			tags = reduce(lambda x,y: x + ' ' + y, entity.tags)
 		except:
 			tags = ''
-		
+
 		createform = form.Form(
 			form.Checkbox(
 							'published',
-							value=entity.published, 
-							checked='checked'
+							value=entity.published if entity.published else False, 
+							checked=entity.published
 						),
 			form.Textbox(
 							'title',
@@ -58,7 +56,7 @@ def create_form(entity):
 			form.Textbox(
 							'tags', 
 							form.regexp(
-								r'^$|[a-zA-Z- ]+', 
+								r'^$|[a-zA-Z- ]', 
 								'Invalid tag(s) entered.'
 							),
 							value=tags
@@ -101,6 +99,8 @@ def consume_form(entity, form_d):
 		for k in form_d.keys():
 			if k == 'tags':
 				form_d[k] = form_d[k].split(' ')
+			elif k == 'published':
+				form_d[k] = False if not form_d[k] else True
 
 			setattr(entity, k, form_d[k])
 
@@ -151,7 +151,7 @@ class create:
 		if name == 'entry':
 			entity = Entry()
 			title = 'New Blog Entry'
-			mce_elms = ['content']
+			mce_elms = 'content'
 		elif name == 'category':
 			entity = Category()
 			title = 'New Blog Category'
