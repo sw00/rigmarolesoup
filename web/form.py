@@ -41,7 +41,7 @@ class Form(object):
     def render(self):
         out = ''
         out += self.rendernote(self.note)
-        out += '<table>\n'
+        out += '<table class="table table-striped">\n'
         
         for i in self.inputs:
             html = utils.safeunicode(i.pre) + i.render() + self.rendernote(i.note) + utils.safeunicode(i.post)
