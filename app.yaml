@@ -21,7 +21,7 @@ handlers:
 - url: /css
   static_dir: static/css
 
-- url: /admin/?
+- url: /admin/?.*?
   script: main.app
   login: admin
 
