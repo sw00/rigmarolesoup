@@ -13,8 +13,8 @@ urls = (
 		#'/list/?$', 'relist',
 		'/list/(\w+)/?$', 'list',
 		'/create/(\w+)/?$', 'create',
-		'/edit/(.*)/?$|/?$', 'update',
-		'/delete/(.*)/?$|/?$', 'delete'
+		'/edit/(.*)/?$', 'update',
+		'/delete/(.*)/?$', 'delete'
 		)
 
 render = render_mako(
@@ -25,35 +25,49 @@ render = render_mako(
 
 app = web.application(urls, locals())
 
-
-def create_entry_form():
-	#fetch the categories:
-	q = Category.query().order(Category.name)
-	categories = q.fetch(10)
-
-	createform = form.Form(
-		form.Checkbox('published', value=True, checked='checked'),
-		form.Textbox('title'),
-		form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
-		form.Textarea('content'),
-		form.Textbox('tags', form.regexp(
-			r'^$|\w+|-', 
-			'Invalid tag(s) entered.')
-			),
-		form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
-		)
-
-	return createform
-
-def create_category_form():
-	createform = form.Form(
+def create_form(entity):
+	if entity.__class__.__name__ == 'Entry':
+		q = Category.query().order(Category.name)
+		categories = q.fetch(10)
+		
+		try:
+			tags = reduce(lambda x,y: x + ' ' + y, entity.tags)
+		except:
+			tags = ''
+		
+		createform = form.Form(
+			form.Checkbox('published', value=entity.published, checked='checked'),
+			form.Textbox('title', value=entity.title),
+			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
+			form.Textarea('content', value=entity.content),
+			form.Textbox('tags', form.regexp(
+				r'^$|\w+|-', 
+				'Invalid tag(s) entered.'),
+				value=tags
+				),
+			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
+			)
+	elif entity.__class__.__name__ == 'Category':
+		createform = form.Form(
 			form.Textbox('name', form.regexp(
-				r'[a-zA-Z ]', 'Invalid chars entered.')),
-			form.Textbox('desc'),
+				r'[a-zA-Z ]', 'Invalid chars entered.'),
+				value=entity.name),
+			form.Textbox('desc', value=entity.desc),
 			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
 			)
 
 	return createform
+
+def consume_form(entity, form_d):
+		del form_d['submit']
+
+		for k in form_d.keys():
+			if k == 'tags':
+				form_d[k] = form_d[k].split(' ')
+
+			setattr(entity, k, form_d[k])
+
+		return entity
 
 class index:
 	def GET(self):
@@ -82,72 +96,70 @@ class list:
 			raise web.seeother('/admin')
 
 class create:
-	def consume_entry_form(cls, form_d):
-		category = form_d.category.value
-		if category:
-			category = ndb.Key(urlsafe=category)
-
-		tags = form_d.tags.value.split(' ')
-		tags = map(lambda x: x.strip(), tags)
-
-		post = Entry(
-				title = form_d.title.value,
-				content = form_d.content.value,
-				tags = tags,
-				published = form_d.published.value,
-				parent = category)
-		
-		return post.put()
-
-	def create_category_form(cls):
-		createform = form.Form(
-				form.Textbox('name', form.regexp(
-					r'[a-zA-Z ]', 'Invalid chars entered.')),
-				form.Textbox('desc'),
-				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
-				)
-
-		return createform
-
-	def consume_category_form(cls, form_d):
-		c = Category(
-				name = form_d.name.value,
-				desc = form_d.desc.value
-				)
-		
-		return c.put()	
-	
-
 	def GET(self, name):
 		if name == 'entry':
-			form = create_entry_form()
+			form = create_form(Entry())
 			title = 'New Blog Entry'
+			mce_elms = ['content']
 		elif name == 'category':
-			form = create_category_form()
+			form = create_form(Category())
 			title = 'New Blog Category'
+			mce_elms = []
 		else:
 			raise web.badrequest()
 		
-		return render.create(title=title,form=form,mce_elms='content')
+		return render.form(title=title,form=form,mce_elms=mce_elms)
 
 	def POST(self, name):
-		mce_elms = []
 		if name == 'entry':
-			form = create_entry_form()
+			entity = Entry()
 			title = 'New Blog Entry'
-			mce_elms.append('content')
+			mce_elms = ['content']
 		elif name == 'category':
-			form = create_category_form()
+			entity = Category()
 			title = 'New Blog Category'
 		else:
 			raise web.badrequest()
+
+		form = create_form(entity)
 			
 		if not form.validates():
-			return render.create(title=title,mce_elms=mce_elms,form=form)
+			return render.form(title=title,mce_elms=mce_elms,form=form)
 		else:
-			method = 'consume_' + name + '_form'
-			getattr(self, method)(form)
+			entity = consume_form(entity, form._get_d())
+			entity.put()
 			raise web.seeother('/list/%s' % name) 
+
+class update:
+	def GET(self, key):
+		entity = ndb.Key(urlsafe=key).get()
+		form = create_form(entity)
+
+		return render.form(form=form, title='Update %s' % entity.key.kind(), mce_elms='content')
+
+	def POST(self, key):
+		entity = ndb.Key(urlsafe=key).get()
+		form = create_form(entity)
+		
+		if form.validates():
+			if entity.key.kind() == 'Entry':
+#				entity.title = form.title.value
+#				entity.content = form.content.value
+#				entity.tags = form.tags.value.split(' ')
+#				entity.published = form.published.value
+				
+				entity = consume_form(entity, form._get_d())
+				entity.put()
+				return web.seeother('/list/entry')
+			elif entity.key.kind() == 'Category':
+				entity.name = form.name.value
+				entity.desc= form.desc.value
+				
+				entity.put()
+				return web.seeother('/list/category')
+			else:
+				return web.badrequest()
+
 
 class delete:
 	@classmethod
@@ -165,66 +177,7 @@ class delete:
 	def POST(self, key):
 		form = self.create_delete_form(key)
 		m = ndb.Key(urlsafe=form.key.value)
+		name = m.kind().lower()
 		m.delete()
 
-		raise web.seeother('/blog/list', True)
-
-class update:
-	@classmethod
-	def create_update_form(cls, entity=None):
-		if entity.key.kind() == 'Entry':
-			q = Category.query().order(Category.name)
-			categories = q.fetch(10)
-
-			createform = form.Form(
-				form.Checkbox('published', value=entity.published, checked='checked'),
-				form.Textbox('title', value=entity.title),
-				form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
-				form.Textarea('content', value=entity.content),
-				form.Textbox('tags', form.regexp(
-					r'^$|\w+|-', 
-					'Invalid tag(s) entered.'),
-					value=reduce(lambda x,y: x + ' ' + y, entity.tags)
-					),
-				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
-				)
-		elif entity.key.kind() == 'Category':
-			createform = form.Form(
-				form.Textbox('name', form.regexp(
-					r'[a-zA-Z ]', 'Invalid chars entered.'),
-					value=entity.name),
-				form.Textbox('desc', value=entity.desc),
-				form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
-				)
-
-		return createform
-
-
-	def GET(self, key):
-		entity = ndb.Key(urlsafe=key).get()
-		form = self.create_update_form(entity)
-
-		return render.update(form=form, title='Update %s' % entity.key.kind(), mce_elms='content')
-
-	def POST(self, key):
-		entity = ndb.Key(urlsafe=key).get()
-		form = self.create_update_form(entity)
-		
-		if form.validates():
-			if entity.key.kind() == 'Post':
-				entity.title = form.title.value
-				entity.content = form.content.value
-				entity.tags = form.tags.value.split(' ')
-				entity.published = form.published.value
-
-				entity.put()
-				return web.seeother('/blog/list/post', True)
-			elif entity.key.kind() == 'Category':
-				entity.name = form.name.value
-				entity.desc= form.desc.value
-				
-				entity.put()
-				return web.seeother('/blog/list/category', True)
-			else:
-				return web.badrequest()
-
+		raise web.seeother('/list/%s' % name)
