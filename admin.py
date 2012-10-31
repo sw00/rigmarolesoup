@@ -1,7 +1,7 @@
 import web
 from web.contrib.template import render_mako
 from web import form
-from models import Entry as Post
+from models import Entry 
 from models import Category
 from google.appengine.ext import ndb
 from google.appengine.api import users
@@ -25,6 +25,36 @@ render = render_mako(
 
 app = web.application(urls, locals())
 
+
+def create_entry_form():
+	#fetch the categories:
+	q = Category.query().order(Category.name)
+	categories = q.fetch(10)
+
+	createform = form.Form(
+		form.Checkbox('published', value=True, checked='checked'),
+		form.Textbox('title'),
+		form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
+		form.Textarea('content'),
+		form.Textbox('tags', form.regexp(
+			r'^$|\w+|-', 
+			'Invalid tag(s) entered.')
+			),
+		form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
+		)
+
+	return createform
+
+def create_category_form():
+	createform = form.Form(
+			form.Textbox('name', form.regexp(
+				r'[a-zA-Z ]', 'Invalid chars entered.')),
+			form.Textbox('desc'),
+			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
+			)
+
+	return createform
+
 class index:
 	def GET(self):
 		return render.index()
@@ -39,11 +69,11 @@ class list:
 
 			return render.list(categories=results, cursor=cursor, more=more)
 		elif name.lower() == 'entry':
-			q = Post.query().order(Post.timestamp) 
+			q = Entry.query().order(Entry.timestamp) 
 			results,cursor,more = q.fetch_page(10, projection=[
-				Post.timestamp,
-				Post.title,
-				Post.published])
+				Entry.timestamp,
+				Entry.title,
+				Entry.published])
 			
 			if cursor: cursor = cursor.urlsafe()
 
@@ -52,28 +82,7 @@ class list:
 			raise web.seeother('/admin')
 
 class create:
-	@classmethod
-	def create_post_form(cls):
-		#fetch the categories:
-		q = Category.query().order(Category.name)
-		categories = q.fetch(10)
-
-		createform = form.Form(
-			form.Checkbox('published', value=True, checked='checked'),
-			form.Textbox('title'),
-			form.Dropdown('category', map(lambda x: (x.key.urlsafe(), x.name), categories)), 
-			form.Textarea('content'),
-			form.Textbox('tags', form.regexp(
-				r'^$|\w+|-', 
-				'Invalid tag(s) entered.')
-				),
-			form.Button('submit', type_='submit', class_='btn btn-primary btn-large')
-			)
-
-		return createform
-
-	@classmethod
-	def consume_post_form(cls, form_d):
+	def consume_entry_form(cls, form_d):
 		category = form_d.category.value
 		if category:
 			category = ndb.Key(urlsafe=category)
@@ -81,7 +90,7 @@ class create:
 		tags = form_d.tags.value.split(' ')
 		tags = map(lambda x: x.strip(), tags)
 
-		post = Post(
+		post = Entry(
 				title = form_d.title.value,
 				content = form_d.content.value,
 				tags = tags,
@@ -90,7 +99,6 @@ class create:
 		
 		return post.put()
 
-	@classmethod
 	def create_category_form(cls):
 		createform = form.Form(
 				form.Textbox('name', form.regexp(
@@ -101,7 +109,6 @@ class create:
 
 		return createform
 
-	@classmethod
 	def consume_category_form(cls, form_d):
 		c = Category(
 				name = form_d.name.value,
@@ -112,11 +119,11 @@ class create:
 	
 
 	def GET(self, name):
-		if name == 'post':
-			form = self.create_post_form()
-			title = 'New Blog Post'
+		if name == 'entry':
+			form = create_entry_form()
+			title = 'New Blog Entry'
 		elif name == 'category':
-			form = self.create_category_form()
+			form = create_category_form()
 			title = 'New Blog Category'
 		else:
 			raise web.badrequest()
@@ -125,15 +132,13 @@ class create:
 
 	def POST(self, name):
 		mce_elms = []
-		if name == 'post':
-			form = self.create_post_form()
-			title = 'New Blog Post'
-			name = 'post'
+		if name == 'entry':
+			form = create_entry_form()
+			title = 'New Blog Entry'
 			mce_elms.append('content')
 		elif name == 'category':
-			form = self.create_category_form()
+			form = create_category_form()
 			title = 'New Blog Category'
-			name = 'category'
 		else:
 			raise web.badrequest()
 			
@@ -142,7 +147,7 @@ class create:
 		else:
 			method = 'consume_' + name + '_form'
 			getattr(self, method)(form)
-			raise web.seeother('/list') 
+			raise web.seeother('/list/%s' % name) 
 
 class delete:
 	@classmethod
@@ -167,7 +172,7 @@ class delete:
 class update:
 	@classmethod
 	def create_update_form(cls, entity=None):
-		if entity.key.kind() == 'Post':
+		if entity.key.kind() == 'Entry':
 			q = Category.query().order(Category.name)
 			categories = q.fetch(10)
 
