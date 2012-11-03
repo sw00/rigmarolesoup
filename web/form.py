@@ -41,7 +41,7 @@ class Form(object):
     def render(self):
         out = ''
         out += self.rendernote(self.note)
-        out += '<table class="table table-striped">\n'
+        out += '<table>\n'
         
         for i in self.inputs:
             html = utils.safeunicode(i.pre) + i.render() + self.rendernote(i.note) + utils.safeunicode(i.post)
@@ -189,6 +189,16 @@ class AttributeList(dict):
         
     def __repr__(self):
         return '<attrs: %s>' % repr(str(self))
+
+class Div(Input):
+    """Arbitrary div element.
+    
+    """
+    def render(self):
+        attrs = self.attrs.copy()
+        attrs['name'] = self.name
+        value = net.websafe(self.value or '')
+        return '<div %s>%s</div>' % (attrs, value)
 
 class Textbox(Input):
     """Textbox input.

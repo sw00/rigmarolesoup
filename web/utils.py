@@ -69,6 +69,9 @@ class Storage(dict):
         AttributeError: 'a'
     
     """
+    def __init__(self, *args, **kwargs):
+        super(Storage, self).__init__(*args, **kwargs)
+
     def __getattr__(self, key): 
         try:
             return self[key]
@@ -76,6 +79,7 @@ class Storage(dict):
             raise AttributeError, k
     
     def __setattr__(self, key, value): 
+        super(Storage, self).__setattr__(key, value)
         self[key] = value
     
     def __delattr__(self, key):
