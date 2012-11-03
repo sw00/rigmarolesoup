@@ -25,7 +25,7 @@ class Form(object):
     
         >>> f = Form(Textbox("x"))
         >>> f.render()
-        u'<table>\n    <tr><th><label for="x">x</label></th><td><input type="text" id="x" name="x"/></td></tr>\n</table>'
+        u'<table class="table table-striped">\n    <tr><th><label for="x">x</label></th><td><input type="text" id="x" name="x"/></td></tr>\n</table>'
     """
     def __init__(self, *inputs, **kw):
         self.inputs = inputs
@@ -41,7 +41,7 @@ class Form(object):
     def render(self):
         out = ''
         out += self.rendernote(self.note)
-        out += '<table>\n'
+        out += '<table class="table table-striped">\n'
         
         for i in self.inputs:
             html = utils.safeunicode(i.pre) + i.render() + self.rendernote(i.note) + utils.safeunicode(i.post)

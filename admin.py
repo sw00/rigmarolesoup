@@ -48,11 +48,16 @@ def create_form(entity):
 							'category', 
 							map(lambda x: (x.key.urlsafe(), x.name), categories)
 						), 
-			form.Textarea(
+			form.Hidden(
 							'content', 
 							form.notnull,
-							value=entity.content
+							value=entity.content,
 						),
+			form.Div(
+						'content',
+						value=entity.content,
+						id='epiceditor'
+					),
 			form.Textbox(
 							'tags', 
 							form.regexp(
