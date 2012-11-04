@@ -1,7 +1,8 @@
 from google.appengine.ext import ndb
 
 class Entry(ndb.Model):
-	title = ndb.StringProperty()
+	title = ndb.StringProperty(required=True)
+	intro = ndb.StringProperty()
 	content = ndb.TextProperty()
 	timestamp = ndb.DateTimeProperty(auto_now_add=True)
 	tags = ndb.StringProperty(repeated=True)
