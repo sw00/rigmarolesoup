@@ -27,10 +27,14 @@ def authorise(func):
 class index:
 	def GET(self):
 		#get latest 3 blog posts
+		q = Entry.query().order(Entry.timestamp)
+		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+
+		categories = Category.query().order(Category.name).fetch()
 		
 		data = {
-			'entries' : Entry.query().fetch(3),
-			'categories': Category.query().fetch()
+			'entries' : entries,
+			'categories': categories 
 		}
 
 		return render.index(**data)

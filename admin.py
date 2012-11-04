@@ -15,9 +15,7 @@ urls = (
 		)
 
 render = render_mako(
-		directories=['templates/shared', 'templates/admin'],
-		input_encoding='utf-8',
-		output_encoding='utf-8',
+		directories=['templates/shared', 'templates/admin']
 		)
 
 app = web.application(urls, locals())
@@ -52,6 +50,10 @@ def create_form(entity):
 							'content', 
 							form.notnull,
 							value=entity.content,
+						),
+			form.Hidden(
+							'intro',
+							value=entity.intro
 						),
 			form.Div(
 						'content',
