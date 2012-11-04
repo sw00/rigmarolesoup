@@ -1,12 +1,7 @@
 import web
 from web.contrib.template import render_mako
-from web import form
-from models import Entry as Post
-from models import Category
+from models import Category, Entry
 from google.appengine.ext import ndb
-from google.appengine.api import users
-import json
-import datetime
 
 urls = (
 		'^/?$', 'index',
@@ -32,12 +27,13 @@ def authorise(func):
 class index:
 	def GET(self):
 		#get latest 3 blog posts
-		posts = Post.query().fetch(3)
 		
-		dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
-		posts_json = map(lambda p: json.dumps(p.to_dict(), default=dthandler), posts)
+		data = {
+			'entries' : Entry.query().fetch(3),
+			'categories': Category.query().fetch()
+		}
 
-		return render.index(posts=posts, posts_json=posts_json)
+		return render.index(**data)
 
 class post:
 	def GET(self, key):

@@ -1,45 +1,38 @@
 <%inherit file="layout.html"/>
+<%block name="stylesheets">
+	<link href="/css/site.css" rel="stylesheet" />
+</%block>
 <%block name="javascript">
-	data = ${posts_json};
-
-	data = _.map(data, function(p){
-			return jQuery.parseJSON(p);
-		});
-
-	Entry = Backbone.Model.extend({
-		initiliaze: console.log('loaded!')
-	});
-
-	Entries = Backbone.Collection.extend({
-		model: Entry
-	});
-
-	entryObj = new Entry(data);	
 </%block>
 
 <%include file="header.html"/>
 <div class="container" >
-	<div class="six columns nav">
-		<input text></input>
+	<div class="four columns offset-by-one nav">
+		<h4>Categories</h4>
 		<nav>
 			<ul>
-				<li>one</li>
-				<li>two</li>
-				<li>three</li>
-				<li>four</li>
-				<li>five</li>
+			% for c in categories:
+				<li><a href="/blog/category/${c.key.urlsafe()}">${c.name}</a></li>
+			% endfor
 			</ul>
 		</nav>
+		<hr/>
+		<h4>Latest Entries</h4>
+		<ul>
+			% for e in entries:
+			<li><a href="/${c.key.urlsafe()}">${e.title}</a></li>
+			% endfor
+		</ul>
 	</div>
-	<div class="eight columns"> 
-	% for p in posts:
+	<div class="eight columns offset-by-one"> 
+	% for e in entries:
 		<article>
 		<header> 
-		<h2><a href="/blog/p/${p.key.urlsafe()}">${p.title}</a></h2>
-		<h5><strong>${p.timestamp.strftime('%d %B %Y')}</strong></h5>
+		<h2><a href="/blog/p/${e.key.urlsafe()}">${e.title}</a></h2>
+		<h5><strong>${e.timestamp.strftime('%d %B %Y')}</strong></h5>
 		</header>
 		<div class="content">
-			${p.content}
+			${e.content}
 			</div>
 			<footer>
 			<hr/>
