@@ -27,7 +27,7 @@ def authorise(func):
 class index:
 	def GET(self):
 		#get latest 3 blog posts
-		q = Entry.query().order(Entry.timestamp)
+		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 		e_list = q.fetch(5, projection=[Entry.title])
 
@@ -44,9 +44,16 @@ class index:
 class entry:
 	def GET(self, key):
 		entry = ndb.Key(urlsafe=key).get()
+		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
+		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+		e_list = q.fetch(5, projection=[Entry.title])
+		
+		categories = Category.query().order(Category.name).fetch()
 
 		data = {
-				'entry': entry
+				'entry': entry,
+				'categories': categories,
+				'e_list': e_list
 				}
 
 		return render.entry(**data)

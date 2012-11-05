@@ -12,6 +12,46 @@ indexes:
 
 - kind: Entry
   properties:
+  - name: published
+  - name: intro
+  - name: timestamp
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+  - name: intro
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: intro
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: title
+
+- kind: Entry
+  properties:
   - name: timestamp
   - name: intro
   - name: title

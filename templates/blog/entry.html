@@ -9,9 +9,16 @@
 	<div class="four columns offset-by-one nav">
 		<h4>Categories</h4>
 		<ul>
-			<li>cat 1</li>
+		% for c in categories:
+		<li><a href="/blog/category/${c.key.urlsafe()}">${c.name}</a></li>
+		%endfor
 		</ul>
 		<hr/>
+		<h4>Latest Entries</h4>
+		<ul>
+		% for e in e_list:
+			<li><a href="/blog/${e.key.urlsafe()}">${e.title}</a></li>
+		%endfor
 	</div>
 	<div class="ten columns">
 		<article>
