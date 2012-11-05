@@ -7,7 +7,7 @@
 
 <%include file="header.html"/>
 <div class="container" >
-	<div class="four columns offset-by-one nav">
+	<div class="four columns offset-by-two nav">
 		<h4>Categories</h4>
 		<nav>
 			<ul>
@@ -19,16 +19,16 @@
 		<hr/>
 		<h4>Latest Entries</h4>
 		<ul>
-			% for e in entries:
-			<li><a href="/${c.key.urlsafe()}">${e.title}</a></li>
+			% for e in e_list:
+			<li><a href="/blog/${e.key.urlsafe()}">${e.title}</a></li>
 			% endfor
 		</ul>
 	</div>
-	<div class="eight columns offset-by-one"> 
+	<div class="eight columns"> 
 	% for e in entries:
 		<article>
 		<header> 
-		<h2><a href="/blog/p/${e.key.urlsafe()}">${e.title}</a></h2>
+		<h2><a href="/blog/${e.key.urlsafe()}">${e.title}</a></h2>
 		<h5><strong>${e.timestamp.strftime('%d %B %Y')}</strong></h5>
 		</header>
 		<div class="content">

@@ -5,7 +5,7 @@ from google.appengine.ext import ndb
 
 urls = (
 		'^/?$', 'index',
-		'/p/(.*)/?$', 'post'
+		'/(.*)/?$', 'entry'
 		)
 
 render = render_mako(
@@ -29,17 +29,19 @@ class index:
 		#get latest 3 blog posts
 		q = Entry.query().order(Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+		e_list = q.fetch(5, projection=[Entry.title])
 
 		categories = Category.query().order(Category.name).fetch()
 		
 		data = {
 			'entries' : entries,
-			'categories': categories 
+			'categories': categories,
+			'e_list': e_list
 		}
 
 		return render.index(**data)
 
-class post:
+class entry:
 	def GET(self, key):
 		post = ndb.Key(urlsafe=key).get()
 		return render.post(post=post)

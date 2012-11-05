@@ -22,6 +22,11 @@ indexes:
   - name: published
   - name: title
 
+- kind: Entry
+  properties:
+  - name: timestamp
+  - name: title
+
 - kind: Post
   properties:
   - name: created
