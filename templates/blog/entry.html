@@ -1,0 +1,32 @@
+<%inherit file="layout.html"/>
+<%block name="stylsheet">
+	<link href="/css/site.css" rel="stylesheet" />
+</%block>
+
+<%include file="header.html"/>
+
+<div class="container">
+	<div class="four columns offset-by-one nav">
+		<h4>Categories</h4>
+		<ul>
+			<li>cat 1</li>
+		</ul>
+		<hr/>
+	</div>
+	<div class="ten columns">
+		<article>
+		<header>
+		<div class="title"><h2>${entry.title}</h2></div>
+			<p><strong>${entry.timestamp.strftime('%d %B %Y')}</strong></p>
+		</header>
+		<div class="content">
+			${entry.content}
+		</div>
+		<footer>
+			<hr/>
+		</footer>
+		</article>
+	</div>
+</div>
+
+<%include file="footer.html"/>

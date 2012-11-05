@@ -2,7 +2,7 @@
 
 body
 {
-    padding: 60px;
+    padding: 60px 0 0;
     margin: 0;
 }
 
@@ -27,12 +27,14 @@ article header
 
 article .content
 {
-	font-size: 1.174em;
-	line-height: 1.8em;
+	font-size: 1.07em;
+	padding: 5px;
+	line-height: 1.5em;
 }
 
 form table,input,textarea,select
 {
 	width: 100%;
 }
+
 

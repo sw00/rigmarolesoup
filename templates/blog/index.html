@@ -7,7 +7,7 @@
 
 <%include file="header.html"/>
 <div class="container" >
-	<div class="four columns offset-by-two nav">
+	<div class="four columns offset-by-one nav">
 		<h4>Categories</h4>
 		<nav>
 			<ul>
@@ -24,12 +24,12 @@
 			% endfor
 		</ul>
 	</div>
-	<div class="eight columns"> 
+	<div class="ten columns"> 
 	% for e in entries:
 		<article>
 		<header> 
 		<h2><a href="/blog/${e.key.urlsafe()}">${e.title}</a></h2>
-		<h5><strong>${e.timestamp.strftime('%d %B %Y')}</strong></h5>
+		<p><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
 			${e.intro}

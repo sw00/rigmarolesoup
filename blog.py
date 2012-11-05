@@ -43,6 +43,11 @@ class index:
 
 class entry:
 	def GET(self, key):
-		post = ndb.Key(urlsafe=key).get()
-		return render.post(post=post)
+		entry = ndb.Key(urlsafe=key).get()
+
+		data = {
+				'entry': entry
+				}
+
+		return render.entry(**data)
 
