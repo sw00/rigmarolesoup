@@ -111,6 +111,9 @@ def consume_form(entity, form_d):
 
 			setattr(entity, k, form_d[k])
 
+		if hasattr(entity, 'intro'):
+			entity.intro = entity.content[0:250]
+
 		return entity
 
 class index:
@@ -171,7 +174,7 @@ class create:
 		if not form.validates():
 			return render.form(title=title,mce_elms=mce_elms,form=form)
 		else:
-			entity = consume_form(entity, form._get_d())
+			entity = consume_form(entity, form.d)
 			entity.put()
 			raise web.seeother('/list/%s' % name) 
 

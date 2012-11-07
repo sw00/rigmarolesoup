@@ -13,7 +13,7 @@
 	var editor = new EpicEditor(opts).load();
 	$('button[name="submit"]').click(function() {
 		var content = editor.getElement('editor').body.innerHTML;
-		var intro = content.slice(0, content.indexOf('<br><br>'));
+		var intro = content.slice(0, content.indexOf('<div><br></div>'));
 		$('#content').attr('value',content);
 		$('#intro').attr('value',intro);
 	});
