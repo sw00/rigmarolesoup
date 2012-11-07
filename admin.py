@@ -111,9 +111,6 @@ def consume_form(entity, form_d):
 
 			setattr(entity, k, form_d[k])
 
-		if hasattr(entity, 'intro'):
-			entity.intro = entity.content[0:250]
-
 		return entity
 
 class index:
