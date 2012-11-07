@@ -5,7 +5,8 @@ from google.appengine.ext import ndb
 
 urls = (
 		'^/?$', 'index',
-		'/(.*)/?$', 'entry'
+		'/([\w\d-]+)/?', 'entry',
+		'/(\d{4})/(\d{2})/([-\w]+)/?', 'fetchByDate'
 		)
 
 render = render_mako(
@@ -58,3 +59,6 @@ class entry:
 
 		return render.entry(**data)
 
+class fetchByDate:
+	def GET(self, year, month, title):
+		return year,month,title

@@ -111,6 +111,9 @@ def consume_form(entity, form_d):
 
 			setattr(entity, k, form_d[k])
 
+		if hasattr(form_d, 'title'):
+			entity.alias = entity.title.lower().replace(' ', '-')
+
 		return entity
 
 class index:
