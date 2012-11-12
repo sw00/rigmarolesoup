@@ -1,8 +1,21 @@
 <%inherit file="layout.html"/>
+<%block name="javascript">
+<script type="javascript">
+var text="";
+$.get('/txt/blurb.md', function(data){
+	$('#blurb').html(data);		
+
+});
+</script>
+</%block>
 <%include file="header.html"/>
 
 <div class="container">
 	<div class="sixteen columns">
+		<div class="row offset-by-two">
+			<div id="blurb" class="six columns">
+			</div>
+		</div>
 		<div class="row offset-by-two">
 		<div class="six columns">
 			<h3><a href="/blog">blog</a></h3>
