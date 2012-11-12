@@ -12,6 +12,12 @@ indexes:
 
 - kind: Entry
   properties:
+  - name: alias
+  - name: published
+  - name: timestamp
+
+- kind: Entry
+  properties:
   - name: published
   - name: intro
   - name: timestamp
