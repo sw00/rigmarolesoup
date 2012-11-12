@@ -1,0 +1,7 @@
+rigmarolesoup.com is the online real estate of Sett Wai, a carbon-based bipedal macro-organism of _homo sapien_ species, living in Johanesburg, South Africa, Earth.
+
+Sett codes, writes and designs fairly competently. He will sometimes do them for money. He is particularly adept at absorbing and applying new knowledge, so he can probably do many other things too. 
+
+Sett has a myriad of interests - and even more opinions. Some of the former go something like this: python progamming, data-visualisation, game design, new media art, interaction design, photography, pop culture, film and music. Most of the latter can be found at blog.rigmarolesoup.com and sometimes at twitter.com/settface.
+
+"""A human being should be able to change a diaper, plan an invasion, butcher a hog, conn a ship, design a building, write a sonnet, balance accounts, build a wall, set a bone, comfort the dying, take orders, give orders, cooperate, act alone, solve equations, analyze a new problem, pitch manure, program a computer, cook a tasty meal, fight efficiently, die gallantly. Specialization is for insects.""" - Robert A. Heinlen, _Time Enough For Love_
