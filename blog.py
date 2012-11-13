@@ -66,16 +66,19 @@ class fetchByDate:
 		m = timedelta(days=1)
 
 		q = Entry.query(Entry.published==True)
-		#e_list = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 		entry = q.filter(Entry.timestamp >= d, Entry.timestamp <= d+m, Entry.alias==title).fetch(1)
 
-		categories = Category.query().order(Category.name).fetch()
+		if len(entry) == 0:
+			raise web.notfound()
+		else:
+			categories = Category.query().order(Category.name).fetch()
+			e_list = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 		
-		data = {
-				'entry': entry,
+			data = {
+				'entry': entry[0],
 				'categories': categories,
 				'e_list': []
 				}
 
-		return render.entry(**data)
+			return render.entry(**data)
 
