@@ -1,3 +1,14 @@
+<%!
+from lib.markdown2 import markdown
+
+def md_to_html(content):
+	'''convert to html using markdown2'''
+	if content: 
+		content_html = markdown(content)
+		return content_html
+	else:
+		return ''
+%>
 <%inherit file="layout.html"/>
 <%block name="stylsheet">
 	<link href="/css/site.css" rel="stylesheet" />
@@ -27,7 +38,7 @@
 			<p><strong>${entry.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
-			${entry.content}
+			${md_to_html(entry.content)}
 		</div>
 		<footer>
 			<hr/>

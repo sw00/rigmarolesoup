@@ -1,9 +1,23 @@
+<%!
+from lib.markdown2 import markdown
+
+def md_to_html(content):
+	'''convert to html using markdown2'''
+	if content: 
+		content_html = markdown(content)
+		return content_html
+	else:
+		return ''
+
+def get_url(entry):
+	'''returns the url of the entry'''
+	d  = entry.timestamp
+	return '%s/%s/%s/%s' % (d.year, d.month, d.day, entry.alias)
+%>
+
 <%inherit file="layout.html"/>
 <%block name="stylesheets">
 	<link href="/css/site.css" rel="stylesheet" />
-</%block>
-<%block name="javascript">
-<script type="text/javascript" src="/static/epiceditor/js/epiceditor.min.js"></script>
 </%block>
 
 <%include file="header.html"/>
@@ -29,11 +43,11 @@
 	% for e in entries:
 		<article>
 		<header> 
-		<h2><a href="/blog/${e.key.urlsafe()}">${e.title}</a></h2>
+		<h2><a href="/blog/${get_url(e)}">${e.title}</a></h2>
 		<p><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
-			${e.intro}
+			${md_to_html(e.intro)}
 			...
 		</div>
 		<footer>

@@ -3,6 +3,7 @@ from web.contrib.template import render_mako
 from models import Category, Entry
 from google.appengine.ext import ndb
 from datetime import datetime, timedelta
+from lib.markdown2 import markdown
 
 urls = (
 		'^/?$', 'index',
@@ -27,15 +28,16 @@ def authorise(func):
 			return func(*args, **kwargs)
 	return decorate
 
+
 class index:
 	def GET(self):
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
 		e_list = q.fetch(5, projection=[Entry.title])
 
 		categories = Category.query().order(Category.name).fetch()
-		
+
 		data = {
 			'entries' : entries,
 			'categories': categories,
@@ -48,7 +50,7 @@ class entry:
 	def GET(self, key):
 		entry = ndb.Key(urlsafe=key).get()
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-		entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+		entries = q.fetch(3, projection=[Entry.title, Entity.alias, Entry.timestamp, Entry.intro])
 		e_list = q.fetch(5, projection=[Entry.title])
 		
 		categories = Category.query().order(Category.name).fetch()
