@@ -14,7 +14,9 @@
 	$('button[name="submit"]').click(function() {
 		//var content = editor.getElement('editor').body.innerText;
 		var content = editor.exportFile();
-		var intro = content.substr(0, content.indexOf('\n'));
+		var p = content.indexOf('\n');
+		p = (p > 500) 500 : p;
+		var intro = content.substr(0, p);
 		$('#content').attr('value',content);
 		$('#intro').attr('value',intro);
 	});
