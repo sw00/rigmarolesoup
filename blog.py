@@ -91,8 +91,8 @@ class category:
 		if len(c) == 0:
 			raise web.notfound()
 		else:
-			q = Entry.query(Entry.published==True, Entry.category==c[0].key).order(-Entry.timestamp)
-			entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+			q = Entry.query(Entry.published==True).order(-Entry.timestamp)
+			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 			e_list = q.fetch(5, projection=[Entry.title])
 
 			categories = Category.query().order(Category.name).fetch()
