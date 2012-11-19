@@ -12,14 +12,17 @@
 	
 	var editor = new EpicEditor(opts).load();
 	$('button[name="submit"]').click(function() {
-		var content = editor.getElement('editor').body.innerText;
+		//var content = editor.getElement('editor').body.innerText;
+		var content = editor.exportFile();
 		var intro = content.substr(0, content.indexOf('\n'));
 		$('#content').attr('value',content);
 		$('#intro').attr('value',intro);
 	});
 
 	(function(){
-		editor.getElement('editor').body.innerHTML = $('#content').attr('value');
+		//editor.getElement('editor').body.innerHTML = $('#content').attr('value');
+	 	var content = $('#content').attr('value');
+		editor.importFile('', content);
 	 })();
 </script>
 </%block>

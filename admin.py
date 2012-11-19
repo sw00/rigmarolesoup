@@ -191,7 +191,7 @@ class update:
 			form = create_form(entity)
 			title = 'Update %s' % entity.key.kind()
 
-			return render.form(form=form, title=title, mce_elms='content')
+			return render.form(form=form, title=title, mce_elms='content', key=entity.key.urlsafe())
 	
 
 	def POST(self, key):
