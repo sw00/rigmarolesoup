@@ -25,6 +25,7 @@
 	<link rel="stylesheet" href="/css/base.css">
 	<link rel="stylesheet" href="/css/skeleton.css">
 	<link rel="stylesheet" href="/css/layout.css">
+	<link rel="stylesheet" href="/css/site.css">
   <%block name="stylesheets">
 	</%block>
 
@@ -43,8 +44,11 @@
 <body>
 	<!-- Primary Page Layout
 	================================================== -->
+	<%include file="header.html"/>
 
 	${self.body()}
+
+	<%include file="footer.html"/>
 
 	<!-- Scripts and Things
 	================================================== -->
