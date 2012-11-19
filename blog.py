@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 urls = (
 		'^/?$', 'index',
 		'/([\w\d-]+)/?', 'entry',
-		'/(\d{4})/(\d{2})/(\d{2})/([-\w\d]+)/?', 'fetchByDate'
+		'/(\d{4})/(\d{2})/(\d{2})/([-\w\d]+)/?', 'fetchByDate',
+		'/category/([\w\d]+)/?', 'category'
 		)
 
 render = render_mako(
@@ -66,16 +67,40 @@ class fetchByDate:
 		m = timedelta(days=1)
 
 		q = Entry.query(Entry.published==True)
-		#e_list = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 		entry = q.filter(Entry.timestamp >= d, Entry.timestamp <= d+m, Entry.alias==title).fetch(1)
 
-		categories = Category.query().order(Category.name).fetch()
+		if len(entry) == 0:
+			raise web.notfound()
+		else:
+			categories = Category.query().order(Category.name).fetch()
+			e_list = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
 		
-		data = {
-				'entry': entry,
+			data = {
+				'entry': entry[0],
 				'categories': categories,
 				'e_list': []
 				}
 
-		return render.entry(**data)
+			return render.entry(**data)
 
+class category:
+	def GET(self, name):
+		#get latest 3 blog posts
+		c = Category.query(Category.name ==name).fetch(1)
+		
+		if len(c) == 0:
+			raise web.notfound()
+		else:
+			q = Entry.query(Entry.published==True, Entry.category==c[0].key).order(-Entry.timestamp)
+			entries = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
+			e_list = q.fetch(5, projection=[Entry.title])
+
+			categories = Category.query().order(Category.name).fetch()
+			
+			data = {
+				'entries' : entries,
+				'categories': categories,
+				'e_list': e_list
+			}
+
+			return render.index(**data)

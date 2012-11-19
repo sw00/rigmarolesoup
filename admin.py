@@ -15,8 +15,10 @@ urls = (
 		)
 
 render = render_mako(
-		directories=['templates/shared', 'templates/admin']
-		)
+		directories=['templates/shared', 'templates/admin'],
+		input_encoding='utf-8',
+		output_encoding='utf-8'
+)
 
 app = web.application(urls, locals())
 
@@ -108,6 +110,8 @@ def consume_form(entity, form_d):
 				form_d[k] = form_d[k].split(' ')
 			elif k == 'published':
 				form_d[k] = False if not form_d[k] else True
+			elif k == 'category':
+				form_d[k] = ndb.Key(urlsafe=form_d[k])
 
 			setattr(entity, k, form_d[k])
 

@@ -8,6 +8,7 @@ class Entry(ndb.Model):
 	timestamp = ndb.DateTimeProperty(auto_now_add=True)
 	tags = ndb.StringProperty(repeated=True)
 	published = ndb.BooleanProperty(required=True)
+	category = ndb.KeyProperty(required=True)
 
 
 class Category(ndb.Model):
