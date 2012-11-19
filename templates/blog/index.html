@@ -35,7 +35,7 @@ def get_url(entry):
 		<h4>Latest Entries</h4>
 		<ul>
 			% for e in e_list:
-			<li><a href="/blog/${e.key.urlsafe()}">${e.title}</a></li>
+			<li><a href="/blog/${get_url(e)}">${e.title}</a></li>
 			% endfor
 		</ul>
 	</div>

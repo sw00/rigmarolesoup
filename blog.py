@@ -34,7 +34,7 @@ class index:
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
-		e_list = q.fetch(5, projection=[Entry.title])
+		e_list = q.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp])
 
 		categories = Category.query().order(Category.name).fetch()
 
@@ -94,8 +94,8 @@ class category:
 			raise web.notfound()
 		else:
 			q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
-			e_list = q.fetch(5, projection=[Entry.title])
+			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.alias,Entry.title, Entry.timestamp, Entry.intro])
+			e_list = q.fetch(5, projection=[Entry.title, Entry.timestamp, Entry.alias])
 
 			categories = Category.query().order(Category.name).fetch()
 			

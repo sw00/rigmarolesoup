@@ -22,6 +22,16 @@ indexes:
   - name: published
   - name: timestamp
     direction: desc
+  - name: alias
+  - name: intro
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: category
+  - name: published
+  - name: timestamp
+    direction: desc
   - name: intro
   - name: title
 
@@ -60,6 +70,14 @@ indexes:
     direction: desc
   - name: alias
   - name: intro
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: alias
   - name: title
 
 - kind: Entry
