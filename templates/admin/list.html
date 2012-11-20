@@ -1,10 +1,12 @@
 <%inherit file="layout.html"/>
-<%include file="header.html"/>
 <%block name="stylesheets">
 	<link href="/css/admin.css" rel="stylesheet" />
 </%block>
 
-<div class="container" id="#list">
+
+<div id="site-content" class="row">
+
+<div class="row container" id="#list">
 	<div class="sixteen columns">
 	%if not categories is UNDEFINED:
 	<div class="row">
@@ -75,5 +77,5 @@
 </div>
 </div>
 </div>
+</div>
 
-<%include file="footer.html"/>
