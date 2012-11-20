@@ -1,21 +1,9 @@
-<%!
-	from models import Category, Entry
-
-	q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-	e_list = q.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp])
-
-	categories = Category.query().order(Category.name).fetch()
-
-	def get_url(entry):
-		'''returns the url of the entry'''
-		d  = entry.timestamp
-		return '%s/%s/%s/%s' % (d.year, d.month, d.day, entry.alias)
-%>
+<%page args="categories, e_list"/>
 		<h4>Recent Entries</h4>
 		<nav>
 		<ul>
 			% for e in e_list:
-			<li><a href="/blog/${get_url(e)}">${e.title}</a></li>
+			<li><a href="/blog/${e.url}">${e.title}</a></li>
 			% endfor
 		</ul>
 		</nav>

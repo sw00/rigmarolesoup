@@ -37,14 +37,19 @@ def extend_url(entries):
 		e.url = '%s/%s/%s/%s' % (d.year, d.month, d.day, e.alias)
 	return entries
 
+categories = Category.query().order(Category.name)
+e_list = Entry.query(Entry.published==True).order(-Entry.timestamp)
+
 class index:
 	def GET(self):
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
-		
+
 		data = {
-			'entries' : extend_url(entries)
+			'entries' : extend_url(entries),
+			'categories': categories.fetch(),
+			'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 		}
 
 		return render.index(**data)
@@ -72,7 +77,9 @@ class fetchByDate:
 			raise web.notfound()
 		else:
 			data = {
-				'entry': entry[0]
+				'entry': entry[0],
+				'categories': categories.fetch(),
+				'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 				}
 
 			return render.entry(**data)

@@ -31,7 +31,7 @@ def md_to_html(content):
 	% endfor
 	</div>
 	<div class="four columns offset-by-one nav">
-		<%include file="_aside.html" />
+		<%include file="_aside.html" args="categories=categories, e_list=e_list"/>
 	</div>
 </div>
 </div>
