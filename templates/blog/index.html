@@ -8,11 +8,6 @@ def md_to_html(content):
 		return content_html
 	else:
 		return ''
-
-def get_url(entry):
-	'''returns the url of the entry'''
-	d  = entry.timestamp
-	return '%s/%s/%s/%s' % (d.year, d.month, d.day, entry.alias)
 %>
 <%inherit file="layout.html"/>
 
@@ -22,7 +17,7 @@ def get_url(entry):
 	% for e in entries:
 		<article>
 		<header> 
-		<h2><a href="/blog/${get_url(e)}">${e.title}</a></h2>
+		<h2><a href="/blog/${e.url}">${e.title}</a></h2>
 		<p><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
@@ -36,7 +31,7 @@ def get_url(entry):
 	% endfor
 	</div>
 	<div class="four columns offset-by-one nav">
-		<%include file="_aside.html"/>
+		<%include file="_aside.html" />
 	</div>
 </div>
 </div>
