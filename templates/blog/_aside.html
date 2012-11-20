@@ -1,0 +1,23 @@
+<%!
+	from models import Category, Entry
+
+	q = Entry.query(Entry.published==True).order(-Entry.timestamp)
+	e_list = q.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp])
+
+	categories = Category.query().order(Category.name).fetch()
+%>
+<h4>Categories</h4>
+		<nav>
+			<ul>
+			% for c in categories:
+				<li><a href="/blog/category/${c.name}">${c.name}</a></li>
+			% endfor
+			</ul>
+		</nav>
+		<hr/>
+		<h4>Latest Entries</h4>
+		<ul>
+			% for e in e_list:
+			<li><a href="/blog/${get_url(e)}">${e.title}</a></li>
+			% endfor
+		</ul>

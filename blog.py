@@ -34,14 +34,9 @@ class index:
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
-		e_list = q.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp])
-
-		categories = Category.query().order(Category.name).fetch()
-
+		
 		data = {
-			'entries' : entries,
-			'categories': categories,
-			'e_list': e_list
+			'entries' : entries
 		}
 
 		return render.index(**data)
@@ -51,14 +46,9 @@ class entry:
 		entry = ndb.Key(urlsafe=key).get()
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 		entries = q.fetch(3, projection=[Entry.title, Entity.alias, Entry.timestamp, Entry.intro])
-		e_list = q.fetch(5, projection=[Entry.title])
-		
-		categories = Category.query().order(Category.name).fetch()
 
 		data = {
-				'entry': entry,
-				'categories': categories,
-				'e_list': e_list
+				'entry': entry
 				}
 
 		return render.entry(**data)
@@ -74,13 +64,8 @@ class fetchByDate:
 		if len(entry) == 0:
 			raise web.notfound()
 		else:
-			categories = Category.query().order(Category.name).fetch()
-			e_list = q.fetch(3, projection=[Entry.title, Entry.timestamp, Entry.intro])
-		
 			data = {
 				'entry': entry[0],
-				'categories': categories,
-				'e_list': []
 				}
 
 			return render.entry(**data)

@@ -28,22 +28,7 @@ def md_to_html(content):
 		</article>
 	</div>
 	<div class="four columns offset-by-one nav">
-		<h4>Tweets</h4>	
-<a class="twitter-timeline" href="https://twitter.com/settface" data-widget-id="263303453625950210">Tweets by @settface</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-		<h4>Categories</h4>
-		<ul>
-		% for c in categories:
-		<li><a href="/blog/category/${c.key.urlsafe()}">${c.name}</a></li>
-		%endfor
-		</ul>
-		<hr/>
-		<h4>Latest Entries</h4>
-		<ul>
-		% for e in e_list:
-			<li><a href="/blog/${e.key.urlsafe()}">${e.title}</a></li>
-		%endfor
+		<%include file="_aside.html"/>
 	</div>
 </div>
 </div>
