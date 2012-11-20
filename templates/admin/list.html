@@ -33,7 +33,11 @@
 			<tr>
 				<td><a href="/admin/edit/${c.key.urlsafe()}">${c.name}</a></td>
 				<td>${c.desc}</td>
-				<td><a class="btn btn-mini btn-danger" href="/admin/delete/${c.key.urlsafe()}">delete</a></td>
+				<td>
+					<form action="/admin/delete/${c.key.urlsafe()}" method="POST">
+						<input type="submit" value="x"/>
+					</form>
+					<a class="btn btn-mini btn-danger" href="/admin/delete/${c.key.urlsafe()}">delete</a></td>
 		%endfor
 			</table>	
 		</div>
@@ -69,7 +73,10 @@
 			%endif	
 			<td><a href="/admin/edit/${p.key.urlsafe()}">${p.title}</a></td>
 				<td>${p.timestamp.strftime('%d %B %Y')}</td>
-				<td><a class="btn btn-mini btn-danger" href="/admin/delete/${p.key.urlsafe()}">delete</a></td>
+				<td>
+					<form action="/admin/delete/${p.key.urlsafe()}" method="POST">
+						<input type="submit" value="x"/>
+					</form>
 			</tr>
 		% endfor
 	</table>
