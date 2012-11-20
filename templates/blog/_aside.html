@@ -11,7 +11,15 @@
 		d  = entry.timestamp
 		return '%s/%s/%s/%s' % (d.year, d.month, d.day, entry.alias)
 %>
-<h4>Categories</h4>
+		<h4>Recent Entries</h4>
+		<nav>
+		<ul>
+			% for e in e_list:
+			<li><a href="/blog/${get_url(e)}">${e.title}</a></li>
+			% endfor
+		</ul>
+		</nav>
+		<h4>Categories</h4>
 		<nav>
 			<ul>
 			% for c in categories:
@@ -19,10 +27,3 @@
 			% endfor
 			</ul>
 		</nav>
-		<hr/>
-		<h4>Latest Entries</h4>
-		<ul>
-			% for e in e_list:
-			<li><a href="/blog/${get_url(e)}">${e.title}</a></li>
-			% endfor
-		</ul>
