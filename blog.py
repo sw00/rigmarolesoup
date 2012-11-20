@@ -16,6 +16,7 @@ render = render_mako(
 		directories=['templates/shared', 'templates/blog'],
 		input_encoding='utf-8',
 		output_encoding='utf-8',
+		strict_undefined=True
 		)
 
 app = web.application(urls, locals())
@@ -28,6 +29,13 @@ def authorise(func):
 			return func(*args, **kwargs)
 	return decorate
 
+def extend_url(entries):
+	'''Extends each entry object with url attribute
+	'''
+	for e in entries:
+		d  = e.timestamp
+		e.url = '%s/%s/%s/%s' % (d.year, d.month, d.day, e.alias)
+	return entries
 
 class index:
 	def GET(self):
@@ -36,7 +44,7 @@ class index:
 		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
 		
 		data = {
-			'entries' : entries
+			'entries' : extend_url(entries)
 		}
 
 		return render.index(**data)
@@ -45,7 +53,6 @@ class entry:
 	def GET(self, key):
 		entry = ndb.Key(urlsafe=key).get()
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-		entries = q.fetch(3, projection=[Entry.title, Entity.alias, Entry.timestamp, Entry.intro])
 
 		data = {
 				'entry': entry

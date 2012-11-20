@@ -5,6 +5,11 @@
 	e_list = q.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp])
 
 	categories = Category.query().order(Category.name).fetch()
+
+	def get_url(entry):
+		'''returns the url of the entry'''
+		d  = entry.timestamp
+		return '%s/%s/%s/%s' % (d.year, d.month, d.day, entry.alias)
 %>
 <h4>Categories</h4>
 		<nav>
