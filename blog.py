@@ -94,10 +94,11 @@ class category:
 		else:
 			q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.alias,Entry.title, Entry.timestamp, Entry.intro])
-			e_list = q.fetch(5, projection=[Entry.title, Entry.timestamp, Entry.alias])
 
 			data = {
-				'entries' : extend_url(entries)
+				'entries' : extend_url(entries),
+				'categories': categories.fetch(),
+				'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 			}
 
 			return render.index(**data)
