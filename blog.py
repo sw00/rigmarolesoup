@@ -97,7 +97,9 @@ class category:
 			e_list = q.fetch(5, projection=[Entry.title, Entry.timestamp, Entry.alias])
 
 			data = {
-				'entries' : extend_url(entries)
+				'entries' : extend_url(entries),
+				'categories': categories.fetch(),
+				'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 			}
 
 			return render.index(**data)
