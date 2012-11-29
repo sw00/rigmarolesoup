@@ -7,11 +7,11 @@ from google.appengine.api import users
 import re
 
 urls = (
-		'/?$', 'index',
-		'/list/(\w+)/?$', 'list',
-		'/create/(\w+)/?$', 'create',
-		'/edit/(.*)/?$', 'update',
-		'/delete/(.*)/?$', 'delete'
+		'/admin/?$', 'index',
+		'/admin/list/(\w+)/?$', 'list',
+		'/admin/create/(\w+)/?$', 'create',
+		'/admin/edit/(.*)/?$', 'update',
+		'/admin/delete/(.*)/?$', 'delete'
 		)
 
 render = render_mako(
@@ -20,7 +20,8 @@ render = render_mako(
 		output_encoding='utf-8'
 )
 
-app = web.application(urls, locals())
+app = web.application(urls, globals())
+app = app.gaerun()
 
 def create_form(entity):
 	#todo: proper validation for tags

@@ -1,4 +1,4 @@
-application: rigmarolesoup
+application: rigmablog
 version: 1
 runtime: python27
 api_version: 1
@@ -25,13 +25,15 @@ handlers:
   static_dir: static/txt
 
 - url: /admin/?.*?
-  script: main.app
+  script: admin.app
   login: admin
 
 - url: .*
-  script: main.app
+  script: blog.app
 
 libraries:
 - name: markupsafe
   version: latest
 
+builtins:
+- remote_api: on
