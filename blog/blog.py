@@ -19,7 +19,8 @@ render = render_mako(
 		strict_undefined=True
 		)
 
-app = web.application(urls, locals())
+app = web.application(urls, globals())
+app = app.gaerun()
 
 def authorise(func):
 	def decorate(*args, **kwargs):
