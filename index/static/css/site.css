@@ -30,6 +30,12 @@ body
 	text-decoration: none;
 }
 
+#social-media 
+{
+	float: right;
+	margin: 60px 20px 0;
+}
+
 #site-content
 {
 	background-image: none;
@@ -52,35 +58,7 @@ body
 	min-height: 100%;
 }
 
-article
+small
 {
-	font-family: 'Computer Modern', serif;
-	line-height: 1.5em;
+	font-size: small;
 }
-
-article .title
-{
-	font-size: 2.24em;
-	font-weight: bold;
-	line-height: 2.4em;
-}
-
-article header
-{
-	margin-bottom: 2em;
-	text-align:center;
-}
-
-article .content
-{
-	font-size: 1.07em;
-	padding: 5px;
-	line-height: 1.5em;
-}
-
-form table,input,textarea,select
-{
-	width: 100%;
-}
-
-
