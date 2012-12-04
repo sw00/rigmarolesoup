@@ -3,7 +3,7 @@
 		<nav>
 		<ul>
 			% for e in e_list:
-			<li><a href="/blog/${e.url}">${e.title}</a></li>
+			<li><a href="/${e.url}">${e.title}</a></li>
 			% endfor
 		</ul>
 		</nav>
@@ -11,7 +11,7 @@
 		<nav>
 			<ul>
 			% for c in categories:
-				<li><a href="/blog/category/${c.name}">${c.name}</a></li>
+				<li><a href="/category/${c.name}">${c.name}</a></li>
 			% endfor
 			</ul>
 		</nav>

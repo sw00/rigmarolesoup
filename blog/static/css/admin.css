@@ -4,6 +4,11 @@ form
 	margin 0 0 20px;
 }
 
+form table,input,textarea,select
+{
+	width: 100%;
+}
+
 table {
   max-width: 100%;
   background-color: transparent;

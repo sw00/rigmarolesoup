@@ -17,12 +17,11 @@ def md_to_html(content):
 	% for e in entries:
 		<article>
 		<header> 
-		<h2><a href="/${e.url}">${e.title}</a></h2>
+		<h2 class="title"><a href="/${e.url}">${e.title}</a></h2>
 		<p><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
 			${md_to_html(e.intro)}
-			...
 		</div>
 		<footer>
 		<hr/>
