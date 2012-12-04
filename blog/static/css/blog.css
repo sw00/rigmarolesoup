@@ -23,7 +23,13 @@ article .content
 {
 	font-size: 1.07em;
 	padding: 5px;
-	line-height: 1.5em;
+	line-height: 1.8em;
+}
+
+article .content ul
+{
+	list-style: circle;
+	padding-left: 2em;
 }
 
 /*** code block formatting, yanked from http://adis.ca/post/pretty-code-block-in-css/ ***/ 
@@ -41,7 +47,7 @@ pre {
     display: block;
     clear: both;
     color: #555555;
-    padding: 1em 1em;
+    padding: 0.5em 0.5em;
     margin: auto 40px auto 40px;
     background: #f4f4f4;
     border: solid 1px #e1e1e1
@@ -53,7 +59,7 @@ code {
 
     display: inline; 
     color: #555555;
-    padding: 1em 1em;
+    padding: 0.5em 0.5em;
     background: #f4f4f4;
 }
 /*** end code block formattign ***/

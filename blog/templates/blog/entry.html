@@ -10,13 +10,20 @@ def md_to_html(content):
 		return ''
 %>
 <%inherit file="layout.html"/>
+<%block name="stylesheets">
+	<style>
+		.content p{
+			margin: 1em 0 2em;
+		}
+	</style>
+</%block>
 
 <div id="site-content" class="row">
 	<div class="row container">
 	<div class="ten columns">
 		<article>
 		<header>
-		<div class="title"><h2>${entry.title}</h2></div>
+		<h2 class="title">${entry.title}</h2>
 			<p><strong>${entry.timestamp.strftime('%d %B %Y')}</strong></p>
 		</header>
 		<div class="content">
