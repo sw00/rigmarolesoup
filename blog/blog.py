@@ -8,7 +8,7 @@ from lib.markdown2 import markdown
 urls = (
 		'^/?$', 'index',
 		'/([\w\d-]+)/?', 'entry',
-		'/(\d{4})/(\d{2})/(\d{2})/([-\w\d]+)/?', 'fetchByDate',
+		'/(\d{4})/(\d{1,2})/(\d{1,2})/([-\w\d]+)/?', 'fetchByDate',
 		'/category/([\w\d]+)/?', 'category'
 		)
 
