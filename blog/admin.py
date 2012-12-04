@@ -181,7 +181,7 @@ class create:
 		else:
 			entity = consume_form(entity, form.d)
 			entity.put()
-			raise web.seeother('/list/%s' % name) 
+			raise web.seeother('/admin/list/%s' % name) 
 
 class update:
 	def GET(self, key):
@@ -210,7 +210,7 @@ class update:
 			else:
 				entity = consume_form(entity, form.d)
 				entity.put()
-				return web.seeother('/list/%s' % name.lower())
+				return web.seeother('/admin/list/%s' % name.lower())
 
 class delete:
 	@classmethod
@@ -231,4 +231,4 @@ class delete:
 		name = m.kind().lower()
 		m.delete()
 
-		raise web.seeother('/list/%s' % name)
+		raise web.seeother('/admin/list/%s' % name)
