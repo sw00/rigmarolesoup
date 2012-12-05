@@ -41,6 +41,23 @@
 	<link rel="apple-touch-icon" sizes="72x72" href="//rigmarolesoup.com/img/apple-touch-icon-72x72.png">
 	<link rel="apple-touch-icon" sizes="114x114" href="//rigmarolesoup.com/img/apple-touch-icon-114x114.png">
 
+	<!-- Analytics
+	================================================= -->
+	<script type="text/javascript">
+
+		  var _gaq = _gaq || [];
+		    _gaq.push(['_setAccount', 'UA-36854111-1']);
+			  _gaq.push(['_setDomainName', 'rigmarolesoup.com']);
+			    _gaq.push(['_trackPageview']);
+
+				  (function() {
+				       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+					       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+						       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+							     })();
+
+							 </script>
+
 </head>
 <body>
 	<!-- Primary Page Layout
@@ -52,7 +69,7 @@
 	<%include file="footer.html"/>
 
 	<!-- Scripts and Things
-	================================================== -->
+	================================================== 
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
@@ -62,7 +79,7 @@
 		window.Backbone || document.write('<script src="/static/js/backbone-min.js"><\/script>');
 		window.jQuery || document.write('<script src="/static/js/jquery-1.8.2.min.js">');
 	</script>
-	<%block name="javascript"></%block>
+	================================================ -->
 <!-- End Document
 ================================================== -->
 </body>
