@@ -26,6 +26,11 @@ article .content
 	line-height: 1.8em;
 }
 
+article .content h4
+{
+	margin-top: 2em;
+}
+
 article .content ul
 {
 	list-style: circle;
@@ -35,7 +40,7 @@ article .content ul
 /*** code block formatting, yanked from http://adis.ca/post/pretty-code-block-in-css/ ***/ 
 pre {
     font-size: 90%;
-    line-height: 1.2em;
+    line-height: 1.5em;
     font-family: "Courier 10 Pitch", Courier, monospace; 
     white-space: pre; 
     white-space: pre-wrap; 
@@ -48,7 +53,6 @@ pre {
     clear: both;
     color: #555555;
     padding: 0.5em 0.5em;
-    margin: auto 40px auto 40px;
     background: #f4f4f4;
     border: solid 1px #e1e1e1
 } 
@@ -59,7 +63,7 @@ code {
 
     display: inline; 
     color: #555555;
-    padding: 0.5em 0.5em;
+    padding: 0.3em 0.3em;
     background: #f4f4f4;
 }
 /*** end code block formattign ***/
