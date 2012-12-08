@@ -50,7 +50,7 @@ class index:
 	def GET(self):
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro, Entry.category, Entry.tags])
+		entries = q.fetch(3)
 
 		data = {
 			'entries' : extend_entry(entries, True),
@@ -102,7 +102,7 @@ class category:
 			raise web.notfound()
 		else:
 			q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.alias,Entry.title, Entry.timestamp, Entry.intro, Entry.tags])
+			entries = q.filter(Entry.category==c[0].key).fetch(3)
 
 			for e in entries:
 				e.category_name = name
