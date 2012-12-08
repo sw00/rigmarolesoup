@@ -10,7 +10,6 @@ article .title
 {
 	font-size: 2.24em;
 	font-weight: bold;
-	line-height: 2.4em;
 }
 
 article header
@@ -28,7 +27,7 @@ article .content
 
 article .content h4
 {
-	margin-top: 2em;
+	margin-top: 1em;
 }
 
 article .content ul
@@ -55,7 +54,9 @@ pre {
     color: #555555;
     padding: 0.5em 0.5em;
     background: #f4f4f4;
-    border: solid 1px #e1e1e1
+    border: solid 1px #e1e1e1;
+
+	margin: 0 0 2em;
 } 
 code { 
     font-size: 90%;
