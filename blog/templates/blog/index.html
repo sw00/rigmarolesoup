@@ -17,22 +17,10 @@ def md_to_html(content):
 		&nbsp;
 	% for e in entries:
 		<article>
+		<header> 
 		<h2 class="title"><a href="/${e.url}">${e.title}</a></h2>
-		<p class="timestamp"><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
-		<ul class="meta-stuff">
-			<li>Posted in: <a href="/category/${e.category_name}">${e.category_name}</a>.</li>
-			<li>Tagged with:
-			%for t in range(len(e.tags)):
-			<span>${e.tags[t]}
-			%if t == len(e.tags)-1:
-				.
-			%else:
-				,
-			%endif
-			</span>
-			%endfor
-		</li>
-		</ul>
+		<p><strong>${e.timestamp.strftime('%d %B %Y')}</strong></p>
+		</header>
 		<div class="content">
 			${md_to_html(e.intro)}
 		</div>
