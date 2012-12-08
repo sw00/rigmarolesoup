@@ -23,10 +23,11 @@ body
 	margin: 40px 0 10px 20px;
 }
 
-#header a
+#header a, #header a:hover
 {
 	text-decoration: none;
 	color: black;
+	background: none;
 }
 
 #social-media 
@@ -73,5 +74,7 @@ a, a:visited{
 }
 
 a:hover{
-	color: #00A7BD;
+	color: #FFFFFF;
+	background-color: #FFBE49;
+	text-decoration: underline;
 }
