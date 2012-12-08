@@ -30,12 +30,17 @@ def authorise(func):
 			return func(*args, **kwargs)
 	return decorate
 
-def extend_url(entries):
+def extend_entry(entries, category=False):
 	'''Extends each entry object with url attribute
+	   Uses flag to determine if category should be extended too
 	'''
 	for e in entries:
 		d  = e.timestamp
 		e.url = '%s/%s/%s/%s' % (d.year, d.month, d.day, e.alias)
+
+		if category:
+			e.category_name = e.category.get().name
+
 	return entries
 
 categories = Category.query().order(Category.name)
@@ -45,12 +50,12 @@ class index:
 	def GET(self):
 		#get latest 3 blog posts
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-		entries = q.fetch(3, projection=[Entry.title, Entry.alias, Entry.timestamp, Entry.intro])
+		entries = q.fetch(3)
 
 		data = {
-			'entries' : extend_url(entries),
+			'entries' : extend_entry(entries, True),
 			'categories': categories.fetch(),
-			'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
+			'e_list': extend_entry(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 		}
 
 		return render.index(**data)
@@ -61,7 +66,7 @@ class entry:
 		q = Entry.query(Entry.published==True).order(-Entry.timestamp)
 
 		data = {
-				'entry': entry
+				'entry': extend_entry(entry, true)
 				}
 
 		return render.entry(**data)
@@ -77,10 +82,13 @@ class fetchByDate:
 		if len(entry) == 0:
 			raise web.notfound()
 		else:
+			#get category name:
+			entry[0].category_name = entry[0].category.get().name
+
 			data = {
 				'entry': entry[0],
 				'categories': categories.fetch(),
-				'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
+				'e_list': extend_entry(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 				}
 
 			return render.entry(**data)
@@ -94,12 +102,15 @@ class category:
 			raise web.notfound()
 		else:
 			q = Entry.query(Entry.published==True).order(-Entry.timestamp)
-			entries = q.filter(Entry.category==c[0].key).fetch(3, projection=[Entry.alias,Entry.title, Entry.timestamp, Entry.intro])
+			entries = q.filter(Entry.category==c[0].key).fetch(3)
+
+			for e in entries:
+				e.category_name = name
 
 			data = {
-				'entries' : extend_url(entries),
+				'entries' : extend_entry(entries),
 				'categories': categories.fetch(),
-				'e_list': extend_url(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
+				'e_list': extend_entry(e_list.fetch(5, projection=[Entry.title, Entry.alias, Entry.timestamp]))
 			}
 
 			return render.index(**data)

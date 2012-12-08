@@ -135,7 +135,7 @@ class list:
 
 			return render.list(categories=results, cursor=cursor, more=more)
 		elif name.lower() == 'entry':
-			q = Entry.query().order(Entry.timestamp) 
+			q = Entry.query().order(-Entry.timestamp) 
 			results,cursor,more = q.fetch_page(10, projection=[
 				Entry.timestamp,
 				Entry.title,

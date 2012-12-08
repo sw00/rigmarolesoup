@@ -24,6 +24,44 @@ indexes:
     direction: desc
   - name: alias
   - name: intro
+  - name: tags
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: category
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: alias
+  - name: intro
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: alias
+  - name: category
+  - name: intro
+  - name: tags
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: published
+  - name: timestamp
+    direction: desc
+  - name: alias
+  - name: category
+  - name: tags
   - name: title
 
 - kind: Entry
@@ -46,5 +84,12 @@ indexes:
 - kind: Entry
   properties:
   - name: timestamp
+  - name: published
+  - name: title
+
+- kind: Entry
+  properties:
+  - name: timestamp
+    direction: desc
   - name: published
   - name: title
