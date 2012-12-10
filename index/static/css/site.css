@@ -1,3 +1,14 @@
+/** webfont for entypo glyphs **/
+@font-face {
+    font-family: 'Entypo Social';
+    src: url('/font/entypo-social.eot');
+    src: url('/font/entypo-social.eot?#iefix') format('embedded-opentype'),
+         url('/font/entypo-social.woff') format('woff'),
+         url('/font/entypo-social.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
 body
 {
     padding: 0;
@@ -63,6 +74,17 @@ body
 	min-height: 100%;
 }
 
+.entypo
+{
+	font-size: 2em;
+	font-family: 'Entypo social';
+}
+
+.entypo a:hover
+{
+	text-decoration: none;
+}
+
 small
 {
 	font-size: small;
@@ -78,3 +100,4 @@ a:hover{
 	background-color: #FFBE49;
 	text-decoration: underline;
 }
+
