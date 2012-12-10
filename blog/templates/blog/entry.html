@@ -21,11 +21,11 @@ def md_to_html(content):
 			<li>Posted in: <a href="/category/${entry.category_name}">${entry.category_name}</a>.</li>
 			<li>Tagged with:
 			%for t in range(len(entry.tags)):
-			<span>${entry.tags[t]}
+			<span>
 			%if t == len(entry.tags)-1:
-				.
+				${entry.tags[t]+'.'}
 			%else:
-				,
+				${entry.tags[t]+','}
 			%endif
 			</span>
 			%endfor
