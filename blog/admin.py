@@ -45,6 +45,14 @@ def create_form(entity):
 							form.notnull,
 							value=entity.title
 						),
+			form.Textbox(
+							'alias',
+							form.regexp(
+								r'[a-zA-Z_.-0-9]',
+								'Invalid alias, must be url friendly'
+							),
+							value=entity.alias
+						),
 			form.Dropdown(
 							'category', 
 							map(lambda x: (x.key.urlsafe(), x.name), categories)
@@ -54,8 +62,9 @@ def create_form(entity):
 							form.notnull,
 							value=entity.content,
 						),
-			form.Hidden(
+			form.Textarea(
 							'intro',
+							maxlength='499',
 							value=entity.intro
 						),
 			form.Div(
@@ -116,9 +125,6 @@ def consume_form(entity, form_d):
 
 			setattr(entity, k, form_d[k])
 
-		if hasattr(form_d, 'title'):
-			entity.alias = entity.title.lower().replace(' ', '-')
-
 		return entity
 
 class index:
@@ -152,32 +158,28 @@ class create:
 		if name == 'entry':
 			form = create_form(Entry())
 			title = 'New Blog Entry'
-			mce_elms = 'content'
 		elif name == 'category':
 			form = create_form(Category())
 			title = 'New Blog Category'
-			mce_elms = []
 		else:
 			raise web.badrequest()
 		
-		return render.form(title=title,form=form,mce_elms=mce_elms)
+		return render.form(title=title,form=form, category=None)
 
 	def POST(self, name):
 		if name == 'entry':
 			entity = Entry()
 			title = 'New Blog Entry'
-			mce_elms = 'content'
 		elif name == 'category':
 			entity = Category()
 			title = 'New Blog Category'
-			mce_elms = []
 		else:
 			raise web.badrequest()
 
 		form = create_form(entity)
 			
 		if not form.validates():
-			return render.form(title=title,mce_elms=mce_elms,form=form)
+			return render.form(title=title,form=form, category=None)
 		else:
 			entity = consume_form(entity, form.d)
 			entity.put()
@@ -191,8 +193,12 @@ class update:
 		else:
 			form = create_form(entity)
 			title = 'Update %s' % entity.key.kind()
+			if entity.key.kind() == 'Entry':
+				category = entity.category.urlsafe()
+			else:
+				category = 'none'
 
-			return render.form(form=form, title=title, mce_elms='content', key=entity.key.urlsafe())
+			return render.form(form=form, title=title, category=category, key=entity.key.urlsafe())
 	
 
 	def POST(self, key):

@@ -9,25 +9,38 @@
 	</script>
 <script type="text/javascript" src="/static/epiceditor/js/epiceditor.min.js"></script>
 <script type="text/javascript">
-	var opts = {
+	(function($, EpicEditor){
+		var opts = {
 		container: 'epiceditor',
 		basePath: '/static/epiceditor'
 		};
-	
-	var editor = new EpicEditor(opts).load();
-	$('button[name="submit"]').click(function() {
-		//var content = editor.getElement('editor').body.innerText;
-		var content = editor.exportFile();
-		var intro = content.substr(0, 450) + "...";
-		$('#content').attr('value',content);
-		$('#intro').attr('value',intro);
-	});
 
-	(function(){
+		var editor = new EpicEditor(opts).load();
+
+		editor.on('update', function() {
+			var intro = editor.exportFile().substr(0,498);
+			$('#intro').attr('value', intro);
+		});
+
+		$('#title').change(function(e){
+			var title = $(this).attr('value');
+			$('#alias').attr('value', title.replace(/ /g, '_')); 
+		});
+
+		$('select').val("${category}");
+	
+		$('button[name="submit"]').click(function() {
+			
+			var content = editor.exportFile();
+//			var intro = content.substr(0, 499);
+			$('#content').attr('value',content);
+//			$('#intro').attr('value',intro);
+		});
+
 		//editor.getElement('editor').body.innerHTML = $('#content').attr('value');
 	 	var content = $('#content').attr('value');
 		editor.importFile('', content);
-	 })();
+	 })(jQuery, EpicEditor);
 </script>
 </%block>
 <div id="site-content" class="row">
