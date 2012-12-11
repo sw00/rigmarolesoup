@@ -15,3 +15,9 @@ class Category(ndb.Model):
 	name = ndb.StringProperty()
 	desc = ndb.StringProperty(indexed=False)
 
+class Image(ndb.Model):
+	parent_entry = ndb.KeyProperty()
+	title = ndb.StringProperty()
+	caption = ndb.StringProperty()
+	blobkey = ndb.BlobKeyProperty()
+
