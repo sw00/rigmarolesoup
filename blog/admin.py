@@ -1,8 +1,8 @@
 import web
 from web.contrib.template import render_mako
 from web import form
-from models import Entry, Category, Image
-from google.appengine.ext import ndb, blobstore
+from models import Entry, Category
+from google.appengine.ext import ndb
 from google.appengine.api import users
 import re
 
@@ -11,8 +11,7 @@ urls = (
 		'/admin/list/(\w+)/?$', 'list',
 		'/admin/create/(\w+)/?$', 'create',
 		'/admin/edit/(.*)/?$', 'update',
-		'/admin/delete/(.*)/?$', 'delete',
-		'/admin/upload/(.*)/?$', 'uploadHandler'
+		'/admin/delete/(.*)/?$', 'delete'
 		)
 
 render = render_mako(
@@ -239,20 +238,3 @@ class delete:
 		m.delete()
 
 		raise web.seeother('/admin/list/%s' % name)
-
-class uploadHandler:
-	def GET(self, parent_key):
-		q = Image.query()
-		images = q.filter(Image.parent_entry==ndb.Key(urlsafe=parent_key)).fetch()
-
-		upload_url = blobstore.create_upload_url('/admin/upload/%s' % parent_key)
-		return render.upload(upload_url=upload_url, images=images, key=parent_key)
-
-	def POST(self, parent_key):
-		img = web.input(myfile = {})
-		web.debug(img)
-		
-		return self.GET(parent_key)
-
-
-

@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>Upload a resource</title>
+	</head>
+	<body>
+		<div id="site-content" class="row">
+			<div class="row container">
+				<div class="sixteen columns">
+					<form action="${upload_url}" enctype="multi-part/formdata" method="POST">
+						<legend>Image List</legend>
+						<table class="table table-striped">
+							<tr>
+								<td>Upload Image:</td>
+								<td>
+									<input type="file" name="file" /><br> <input type="submit"
+									name="submit" value="Submit">
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

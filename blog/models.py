@@ -15,9 +15,12 @@ class Category(ndb.Model):
 	name = ndb.StringProperty()
 	desc = ndb.StringProperty(indexed=False)
 
-class Image(ndb.Model):
-	parent_entry = ndb.KeyProperty()
+class Resource(ndb.Model):
+	''' A generic blob resource.
+	'''
+	parent = ndb.KeyProperty()
 	title = ndb.StringProperty()
+	mimetype = ndb.StringProperty()
 	caption = ndb.StringProperty()
 	blobkey = ndb.BlobKeyProperty()
 
