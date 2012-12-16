@@ -27,6 +27,13 @@ handlers:
 - url: /admin/?.*?
   script: admin.app
   login: admin
+ 
+- url: /blob/.*
+  script: blob.app
+  login: admin
+
+- url: /serve/.*
+  script: blob.app
 
 - url: .*
   script: blog.app
