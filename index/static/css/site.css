@@ -6,7 +6,7 @@
          url('/font/entypo-social.woff') format('woff'),
          url('/font/entypo-social.ttf') format('truetype');
     font-weight: normal;
-    font-style: italic;
+    font-style: normal;
 }
 
 body
@@ -74,10 +74,10 @@ body
 	min-height: 100%;
 }
 
-.entypo
+.entypo a
 {
 	font-size: 2em;
-	font-family: 'Entypo social';
+	font-family: 'Entypo Social';
 }
 
 .entypo a:hover
