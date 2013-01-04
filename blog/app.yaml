@@ -29,11 +29,11 @@ handlers:
   login: admin
  
 - url: /media/upload
-  script: blob.app
+  script: media.app
   login: admin
 
 - url: /media/.*
-  script: blob.app
+  script: media.app
 
 - url: .*
   script: blog.app
