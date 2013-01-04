@@ -3,7 +3,7 @@ import urllib
 
 from webapp2_extras import mako
 
-from models import Resource
+from models import Media
 from google.appengine.ext import ndb, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 
@@ -28,7 +28,7 @@ class MainHandler(BaseHandler):
 		
 #		parent_key = self.request.get('parent')
 
-		upload_url = blobstore.create_upload_url('/blob/upload')
+		upload_url = blobstore.create_upload_url('/media/upload')
 		self.render_response('upload.html',upload_url=upload_url)
 
 
@@ -36,32 +36,30 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 	def post(self):
 		""" Do the actual upload
 		"""
-		upload_files = self.get_uploads('file')
+		upload_files = self.get_uploads('uploadfile')
 		print len(upload_files)
 		blob_info = upload_files[0]
 
 		#parent_key = urllib.unquote(self.request.get('parent'))
 		
-		resource = Resource(
-				title = blob_info.filename,
+		resource = Media(
+				name = blob_info.filename,
 				parent = None,
-				caption = '',
 				blobkey = blob_info.key()
 				) 
 
 		resource.put()
 
-		self.redirect('/serve/%s' % blob_info.key())
+		self.redirect('/media/%s/%s' % (blob_info.key(), blob_info.filename))
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-	def get(self, resource):
-		resource = resource
-		blob_info = blobstore.BlobInfo.get(resource)
+	def get(self, key, name):
+		blob_info = blobstore.BlobInfo.get(key)
 		self.send_blob(blob_info)
 
-app = webapp2.WSGIApplication([(r'/blob/uploadForm', MainHandler),
-								(r'/blob/upload', UploadHandler),
-								(r'/serve/([^/]+)?', ServeHandler)],
+app = webapp2.WSGIApplication([(r'/media/uploadForm', MainHandler),
+								(r'/media/upload', UploadHandler),
+								(r'/media/([^/]+)/([^/]+)?', ServeHandler)],
 								debug=True)
 
 

@@ -28,11 +28,11 @@ handlers:
   script: admin.app
   login: admin
  
-- url: /blob/.*
+- url: /media/upload
   script: blob.app
   login: admin
 
-- url: /serve/.*
+- url: /media/.*
   script: blob.app
 
 - url: .*
